@@ -1,8 +1,12 @@
 import type webFeatures from "web-features"
 
-export type Features = typeof webFeatures
+export type OriginalFeatures = typeof webFeatures
 
-export type Feature = Features[number]
+export type OriginalFeature = OriginalFeatures[number]
+
+export type Feature = OriginalFeature & { id: string }
+
+export type Features = Feature[]
 
 export type browserIdentifier =
   | "chrome"
