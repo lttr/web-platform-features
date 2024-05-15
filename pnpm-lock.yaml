@@ -23,6 +23,9 @@ importers:
       vue-router:
         specifier: ^4.3.2
         version: 4.3.2(vue@3.4.27(typescript@5.4.5))
+      web-features:
+        specifier: ^0.8.1
+        version: 0.8.1
     devDependencies:
       eslint-config-prettier:
         specifier: ^9.1.0
@@ -4571,6 +4574,9 @@ packages:
     peerDependenciesMeta:
       typescript:
         optional: true
+
+  web-features@0.8.1:
+    resolution: {integrity: sha512-JFTkZ24bLgjE5Ke9pJf7ACfxwDkXyB0S6Uvuo+CQw5+laNDcGCOrjjIO0dWLGLA7VEFxkJTqHArhRqMXdLarvQ==}
 
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
@@ -10079,6 +10085,8 @@ snapshots:
       '@vue/shared': 3.4.27
     optionalDependencies:
       typescript: 5.4.5
+
+  web-features@0.8.1: {}
 
   webidl-conversions@3.0.1: {}
 
