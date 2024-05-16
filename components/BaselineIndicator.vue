@@ -59,8 +59,26 @@
         <span :title="`Supported since ${lowDateFull}`" class="min-w-[7ch]">
           {{ lowDateShort }}
         </span>
+
+        <UIcon class="chevron" name="i-heroicons-chevron-down" />
       </div>
     </summary>
+
+    <div class="content py-4">
+      <h3 class="text-sm font-semibold mb-1">Description</h3>
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <p class="mb-2" v-html="feature.description_html"></p>
+      <h3 class="text-sm font-semibold mb-1">Browser compat data names</h3>
+
+      <ul>
+        <li
+          v-for="compatFeature of feature.compat_features"
+          :key="compatFeature"
+        >
+          {{ compatFeature }}
+        </li>
+      </ul>
+    </div>
   </details>
 </template>
 
@@ -222,5 +240,10 @@ const engineTitle = (browsers: BrowserGroup[]) =>
       mask-image: url("~/assets/baseline/browser-check.svg");
     }
   }
+}
+
+details[open] .chevron {
+  rotate: 180deg;
+  transition: rotate 140ms ease-out;
 }
 </style>
