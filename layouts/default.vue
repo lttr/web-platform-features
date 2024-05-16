@@ -22,7 +22,11 @@
       </div>
     </header>
 
-    <slot></slot>
+    <main>
+      <slot></slot>
+    </main>
+
+    <footer class="mt-12"></footer>
   </UContainer>
 </template>
 
