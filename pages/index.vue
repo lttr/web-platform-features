@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex flex-wrap items-center gap-5 mb-5">
-      <div class="flex items-center gap-3">
+      <section class="flex items-center gap-3">
         <span class="italic">Adoption:</span>
         <HRadioGroup v-model="currentView" class="flex gap-4">
           <HRadioGroupOption
@@ -13,9 +13,9 @@
             @click="currentView = view"
           >
             <div
-              class="ring-2 ring-slate-200 dark:ring-slate-600 rounded-sm px-2 py-1 flex items-center gap-2 select-none"
+              class="ring-1 ring-orange-300 dark:ring-orange-700 rounded-sm px-2 py-1 flex items-center gap-2 select-none"
               :class="{
-                'bg-slate-300 ring-slate-400 dark:bg-slate-700 dark:ring-slate-500':
+                'bg-orange-300 ring-orange-500 dark:bg-orange-800 dark:ring-orange-700':
                   checked,
                 'cursor-pointer': !checked,
               }"
@@ -30,23 +30,37 @@
             </div>
           </HRadioGroupOption>
         </HRadioGroup>
-      </div>
-      <div class="flex items-center gap-3">
+      </section>
+
+      <section class="flex items-center gap-3">
         <span class="italic">Sorting:</span>
-        <USelectMenu
-          v-model="sortBy"
-          :options="sortingOptions"
-          color="slate"
-          value-attribute="value"
-          option-attribute="label"
+        <div class="min-w-64">
+          <USelectMenu
+            v-model="sortBy"
+            :options="sortingOptions"
+            value-attribute="value"
+            option-attribute="label"
+          />
+        </div>
+      </section>
+
+      <section class="flex items-center gap-3">
+        <span class="italic">Search:</span>
+        <UInput
+          v-model="searchPattern"
+          color="primary"
+          variant="outline"
+          placeholder="Search..."
         />
-      </div>
+      </section>
     </div>
     <FeaturesList :features />
   </div>
 </template>
 
 <script lang="ts" setup>
+import Fuse from "fuse.js"
+
 const views = ["all", "limited", "low", "high"] as const
 type View = (typeof views)[number]
 const currentView = ref<View>("all")
@@ -122,33 +136,33 @@ const sortByNameDesc = (a: Feature, b: Feature): number => {
 const sortBySource = (): number => 0
 
 const sortingFunctions = {
-  sortByDateAscFutureFirst: sortByDateAscFutureFirst,
-  sortByDateAscFutureLast: sortByDateAscFutureLast,
-  sortByDateDescFutureFirst: sortByDateDescFutureFirst,
   sortByDateDescFutureLast: sortByDateDescFutureLast,
+  sortByDateDescFutureFirst: sortByDateDescFutureFirst,
+  sortByDateAscFutureLast: sortByDateAscFutureLast,
+  sortByDateAscFutureFirst: sortByDateAscFutureFirst,
   sortByNameAsc: sortByNameAsc,
   sortByNameDesc: sortByNameDesc,
   sortBySource: sortBySource,
 } as const
 
 const currentSortingFunction = computed(() => sortingFunctions[sortBy.value])
-const sortBy = ref<keyof typeof sortingFunctions>("sortByDateDescFutureFirst")
+const sortBy = ref<keyof typeof sortingFunctions>("sortByDateDescFutureLast")
 const sortingOptions = [
   {
-    value: "sortByDateAscFutureFirst",
-    label: "by date (ascending, future first)",
-  },
-  {
-    value: "sortByDateAscFutureLast",
-    label: "by date (ascending, future last)",
+    value: "sortByDateDescFutureLast",
+    label: "by date (descending, future last)",
   },
   {
     value: "sortByDateDescFutureFirst",
     label: "by date (descending, future first)",
   },
   {
-    value: "sortByDateDescFutureLast",
-    label: "by date (descending, future last)",
+    value: "sortByDateAscFutureLast",
+    label: "by date (ascending, future last)",
+  },
+  {
+    value: "sortByDateAscFutureFirst",
+    label: "by date (ascending, future first)",
   },
   {
     value: "sortByNameAsc",
@@ -189,6 +203,9 @@ const count = {
 }
 
 const features = computed(() => {
+  if (filtered.value.length) {
+    return filtered.value
+  }
   switch (currentView.value) {
     case "all":
       return all.value
@@ -201,6 +218,32 @@ const features = computed(() => {
     default:
       currentView.value satisfies never
       return []
+  }
+})
+
+const fuseOptions = {
+  keys: [{ name: "name", weight: 5 }, "description", "compat_features"],
+  includeScore: true,
+  threshold: 0.4,
+}
+const searchPattern = ref<string>("")
+const filtered = ref<Feature[]>([])
+
+let fuse: Fuse<Feature> | null = null
+
+onMounted(() => {
+  fuse = new Fuse(all.value, fuseOptions)
+})
+
+watch(searchPattern, () => {
+  if (searchPattern.value === "") {
+    filtered.value = []
+  } else {
+    if (fuse) {
+      currentView.value = "all"
+      const results = fuse.search(searchPattern.value)
+      filtered.value = results.map((x) => x.item).toSorted()
+    }
   }
 })
 </script>
