@@ -21,10 +21,16 @@
               }"
             >
               <span
-                v-if="view !== 'all'"
-                :class="`w-5 h-5 bg-[url(~/assets/baseline/${view}.svg)]
-              dark:bg-[url(~/assets/baseline/${view}-dark.svg)] bg-no-repeat
-              bg-center`"
+                v-if="view === 'limited'"
+                class="w-5 h-5 bg-[url(~/assets/baseline/limited.svg)] dark:bg-[url(~/assets/baseline/limited-dark.svg)] bg-no-repeat bg-center"
+              ></span>
+              <span
+                v-if="view === 'low'"
+                class="w-5 h-5 bg-[url(~/assets/baseline/low.svg)] dark:bg-[url(~/assets/baseline/low-dark.svg)] bg-no-repeat bg-center"
+              ></span>
+              <span
+                v-if="view === 'high'"
+                class="w-5 h-5 bg-[url(~/assets/baseline/high.svg)] dark:bg-[url(~/assets/baseline/high-dark.svg)] bg-no-repeat bg-center"
               ></span>
               <span class="capitalize">{{ view }}</span> ({{ count[view] }})
             </div>
