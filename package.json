@@ -18,6 +18,7 @@
     "@formkit/auto-animate": "^0.8.2",
     "@nuxt/eslint": "^0.3.12",
     "@nuxt/ui": "^2.16.0",
+    "@nuxthub/core": "^0.5.17",
     "fuse.js": "^7.0.0",
     "nuxt": "^3.11.2",
     "vue": "^3.4.27",
@@ -29,6 +30,7 @@
     "eslint-plugin-vue-scoped-css": "^2.8.0",
     "eslint-plugin-vuejs-accessibility": "^2.3.0",
     "nuxt-headlessui": "^1.2.0",
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "wrangler": "^3.57.0"
   }
 }
