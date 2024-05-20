@@ -1,8 +1,4 @@
-import webFeatures from "web-features"
-
-export default defineEventHandler(() => {
-  return Object.entries(webFeatures).map(([key, value]) => ({
-    id: key,
-    ...value,
-  }))
+export default defineEventHandler(async (event) => {
+  const webFeatures = await getWebFeaturesPackageCached(event)
+  return webFeatures
 })
