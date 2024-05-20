@@ -19,7 +19,9 @@ interface GithubReleaseData {
 
 export const getWebFeaturesPackageCached = defineCachedFunction(
   async (_event: H3Event) => {
-    const data = (await $fetch(latestReleaseUrl)) as GithubReleaseData
+    const data = (await $fetch(latestReleaseUrl, {
+      headers: { "User-Agent": "web-features" },
+    })) as GithubReleaseData
     const htmlUrl = data.html_url
     const tagName = data.tag_name
     const publishedAt = data.published_at
