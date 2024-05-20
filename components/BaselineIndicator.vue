@@ -6,7 +6,7 @@
       high: feature.status.baseline === 'high',
     }"
   >
-    <summary class="flex justify-between flex-wrap items-center">
+    <summary class="flex justify-between flex-wrap items-center cursor-pointer">
       <div class="flex gap-3 items-center">
         <h2 class="font-semibold max-w-[25ch]">{{ feature.name }}</h2>
       </div>
@@ -64,20 +64,46 @@
       </div>
     </summary>
 
-    <div class="content py-4">
+    <div class="py-4">
       <h3 class="text-sm font-semibold mb-1">Description</h3>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <p class="mb-2" v-html="feature.description_html"></p>
-      <h3 class="text-sm font-semibold mb-1">Browser compat data names</h3>
 
-      <ul>
+      <h3 class="text-sm font-semibold mb-1">Specification</h3>
+      <p class="mb-2">
+        <NuxtLink class="underline" :to="feature.spec">{{
+          feature.spec
+        }}</NuxtLink>
+      </p>
+
+      <h3 class="text-sm font-semibold mb-1">Browser compat data names</h3>
+      <ul class="mb-2">
         <li
           v-for="compatFeature of feature.compat_features"
           :key="compatFeature"
+          class="list-disc ms-6"
         >
-          {{ compatFeature }}
+          <span class="me-3">{{ compatFeature }}</span>
+          <span>
+            <NuxtLink
+              class="underline"
+              :to="`https://caniuse.com/?search=${compatFeature}`"
+              >Can I Use</NuxtLink
+            >
+          </span>
         </li>
       </ul>
+
+      <details class="flex gap-2">
+        <summary class="w-100 cursor-pointer">
+          <h3 class="inline text-sm font-semibold mb-1">Original data</h3>
+        </summary>
+        <div>
+          <pre class="whitespace-pre-wrap">{{
+            JSON.stringify(feature, null, 2)
+          }}</pre>
+        </div>
+      </details>
     </div>
   </details>
 </template>

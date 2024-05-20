@@ -1,6 +1,13 @@
 <template>
   <ul v-auto-animate class="flex flex-col gap-2">
     <li v-for="feature of features" :key="feature.id" class="max-w-[80ch]">
+      <div
+        v-if="displayYears && isDifferentYear(feature)"
+        :id="`year-${getYear(feature)}`"
+        class="my-3 text-2xl"
+      >
+        {{ getYear(feature) }}
+      </div>
       <BaselineIndicator :feature />
     </li>
   </ul>
@@ -11,7 +18,28 @@ import { vAutoAnimate } from "@formkit/auto-animate"
 
 defineProps<{
   features: Features
+  displayYears: boolean
 }>()
-</script>
 
-<style scoped></style>
+let lastYearSeen = -1
+
+function isDifferentYear(feature: Feature): boolean {
+  const date = feature.status.baseline_low_date
+  if (date) {
+    const year = new Date(date).getFullYear()
+    if (lastYearSeen !== year) {
+      lastYearSeen = year
+      return true
+    }
+  }
+  return false
+}
+
+function getYear(feature: Feature): string {
+  const date = feature.status.baseline_low_date
+  if (date) {
+    return new Date(date).getFullYear().toString()
+  }
+  return ""
+}
+</script>

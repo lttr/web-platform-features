@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="mt-2 mb-4">
+      <HeaderDescription v-bind="data" />
+    </div>
     <div class="flex flex-wrap items-center gap-5 mb-5">
       <section class="flex items-center gap-3">
         <span class="italic">Adoption:</span>
@@ -60,22 +63,34 @@
         />
       </section>
     </div>
-    <FeaturesList :features />
+    <FeaturesList
+      :features="filteredFeatures"
+      :display-years="isSortedByDate && !searchPattern"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
 import Fuse from "fuse.js"
+import type { WebFeaturesPackage } from "~/utils/web-features-schema"
 
 const views = ["all", "limited", "low", "high"] as const
 type View = (typeof views)[number]
 const currentView = ref<View>("all")
 
-const { data } = await useFetch<Features>("/api/features", {
-  default: () => [],
+const { data } = await useFetch<WebFeaturesPackage>("/api/features", {
+  default: () => {
+    return {
+      features: [] as WebFeature[],
+      htmlUrl: "",
+      version: "",
+      publishedAt: "",
+    }
+  },
 })
+const features = computed(() => data.value?.features || [])
 
-const sortByDateDescFutureLast = (a: Feature, b: Feature): number => {
+const sortByDateDescFutureLast = (a: WebFeature, b: WebFeature): number => {
   const aDate = a.status.baseline_low_date
   const bDate = b.status.baseline_low_date
   if (aDate && bDate) {
@@ -89,7 +104,7 @@ const sortByDateDescFutureLast = (a: Feature, b: Feature): number => {
   }
 }
 
-const sortByDateAscFutureFirst = (a: Feature, b: Feature): number => {
+const sortByDateAscFutureFirst = (a: WebFeature, b: WebFeature): number => {
   const aDate = a.status.baseline_low_date
   const bDate = b.status.baseline_low_date
   if (aDate && bDate) {
@@ -103,7 +118,7 @@ const sortByDateAscFutureFirst = (a: Feature, b: Feature): number => {
   }
 }
 
-const sortByDateDescFutureFirst = (a: Feature, b: Feature): number => {
+const sortByDateDescFutureFirst = (a: WebFeature, b: WebFeature): number => {
   const aDate = a.status.baseline_low_date
   const bDate = b.status.baseline_low_date
   if (aDate && bDate) {
@@ -117,7 +132,7 @@ const sortByDateDescFutureFirst = (a: Feature, b: Feature): number => {
   }
 }
 
-const sortByDateAscFutureLast = (a: Feature, b: Feature): number => {
+const sortByDateAscFutureLast = (a: WebFeature, b: WebFeature): number => {
   const aDate = a.status.baseline_low_date
   const bDate = b.status.baseline_low_date
   if (aDate && bDate) {
@@ -131,11 +146,11 @@ const sortByDateAscFutureLast = (a: Feature, b: Feature): number => {
   }
 }
 
-const sortByNameAsc = (a: Feature, b: Feature): number => {
+const sortByNameAsc = (a: WebFeature, b: WebFeature): number => {
   return a.name.localeCompare(b.name)
 }
 
-const sortByNameDesc = (a: Feature, b: Feature): number => {
+const sortByNameDesc = (a: WebFeature, b: WebFeature): number => {
   return b.name.localeCompare(a.name)
 }
 
@@ -153,6 +168,7 @@ const sortingFunctions = {
 
 const currentSortingFunction = computed(() => sortingFunctions[sortBy.value])
 const sortBy = ref<keyof typeof sortingFunctions>("sortByDateDescFutureLast")
+const isSortedByDate = computed(() => sortBy.value.includes("Date"))
 const sortingOptions = [
   {
     value: "sortByDateDescFutureLast",
@@ -184,20 +200,22 @@ const sortingOptions = [
   },
 ]
 
-const all = computed(() => data.value.toSorted(currentSortingFunction.value))
+const all = computed(() =>
+  features.value.toSorted(currentSortingFunction.value),
+)
 const limited = computed(() =>
-  data.value
-    .filter((f) => !f.status.baseline)
+  features.value
+    .filter((f: WebFeature) => !f.status.baseline)
     .toSorted(currentSortingFunction.value),
 )
 const low = computed(() =>
-  data.value
-    .filter((f) => f.status.baseline === "low")
+  features.value
+    .filter((f: WebFeature) => f.status.baseline === "low")
     .toSorted(currentSortingFunction.value),
 )
 const high = computed(() =>
-  data.value
-    .filter((f) => f.status.baseline === "high")
+  features.value
+    .filter((f: WebFeature) => f.status.baseline === "high")
     .toSorted(currentSortingFunction.value),
 )
 
@@ -208,7 +226,7 @@ const count = {
   high: computed(() => high.value.length),
 }
 
-const features = computed(() => {
+const filteredFeatures = computed(() => {
   if (filtered.value.length) {
     return filtered.value
   }
@@ -233,9 +251,9 @@ const fuseOptions = {
   threshold: 0.4,
 }
 const searchPattern = ref<string>("")
-const filtered = ref<Feature[]>([])
+const filtered = ref<WebFeature[]>([])
 
-let fuse: Fuse<Feature> | null = null
+let fuse: Fuse<WebFeature> | null = null
 
 onMounted(() => {
   fuse = new Fuse(all.value, fuseOptions)
