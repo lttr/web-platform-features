@@ -31,16 +31,9 @@ const featureDataSchema = z.object({
   usage_stats: z.union([z.string(), z.array(z.string())]).optional(),
 })
 
-export const WebFeatureSchema = featureDataSchema
-export const WebFeaturesRecordSchema = z.record(featureDataSchema)
+export const WebFeatureInputSchema = featureDataSchema
+export const WebFeaturesRecordInputSchema = z.record(featureDataSchema)
 
-export type WebFeature = z.infer<typeof WebFeatureSchema>
+export type WebFeatureInput = z.infer<typeof WebFeatureInputSchema>
 
-export type WebFeatureWithId = WebFeature & { id: string }
-
-export interface WebFeaturesPackage {
-  features: WebFeatures
-  htmlUrl: string
-  publishedAt: string
-  version: string
-}
+export type WebFeatureInputWithId = WebFeatureInput & { id: string }

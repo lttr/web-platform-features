@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mt-2 mb-4">
-      <HeaderDescription v-bind="data" />
+      <HeaderDescription :wf="data.wf" :bcd="data.bcd" />
     </div>
     <div class="flex flex-wrap items-center gap-5 mb-5">
       <section class="flex items-center gap-3">
@@ -72,7 +72,6 @@
 
 <script lang="ts" setup>
 import Fuse from "fuse.js"
-import type { WebFeaturesPackage } from "~/utils/web-features-schema"
 
 const views = ["all", "limited", "low", "high"] as const
 type View = (typeof views)[number]
@@ -82,9 +81,16 @@ const { data } = await useFetch<WebFeaturesPackage>("/api/features", {
   default: () => {
     return {
       features: [] as WebFeature[],
-      htmlUrl: "",
-      version: "",
-      publishedAt: "",
+      bcd: {
+        htmlUrl: "",
+        version: "",
+        publishedAt: "",
+      },
+      wf: {
+        htmlUrl: "",
+        version: "",
+        publishedAt: "",
+      },
     }
   },
 })

@@ -1,14 +1,7 @@
 import type { H3Event } from "h3"
-import {
-  type WebFeatureInputWithId,
-  WebFeaturesRecordInputSchema,
-} from "~/utils/web-features-input"
-
-// Alternatively: data from a CDN
-// const webFeaturesUrl = "https://cdn.jsdelivr.net/npm/web-features/index.json"
 
 const latestReleaseUrl =
-  "https://api.github.com/repos/web-platform-dx/web-features/releases/latest"
+  "https://api.github.com/repos/mdn/browser-compat-data/releases/latest"
 
 interface GithubReleaseData {
   assets: Array<{ name: string; browser_download_url: string }>
@@ -17,7 +10,7 @@ interface GithubReleaseData {
   tag_name: string
 }
 
-export const getWebFeaturesPackageCached = defineCachedFunction(
+export const getBrowserCompatDataCached = defineCachedFunction(
   async (_event: H3Event) => {
     const data = (await $fetch(latestReleaseUrl)) as GithubReleaseData
     const htmlUrl = data.html_url
@@ -32,15 +25,8 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
       // and ofetch does not handle it at I need
       const response = await fetch(featuresDataUrl)
       const data = await response.json()
-      const parsedData = WebFeaturesRecordInputSchema.parse(data)
-      const list: WebFeatureInputWithId[] = Object.entries(parsedData).map(
-        ([key, value]) => ({
-          id: key,
-          ...value,
-        }),
-      )
       return {
-        features: list,
+        bcd: data,
         htmlUrl,
         publishedAt,
         version: tagName,
@@ -52,6 +38,6 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
   {
     maxAge: 60 * 60 * 24, // 24 hours
     staleMaxAge: 60 * 60, // 1 hour
-    name: "web-features-package",
+    name: "browser-compat-data",
   },
 )

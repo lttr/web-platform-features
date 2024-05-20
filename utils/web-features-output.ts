@@ -3,8 +3,29 @@ import type webFeatures from "web-features"
 export type OriginalFeatures = typeof webFeatures
 export type OriginalFeature = OriginalFeatures[string]
 
-export type Feature = OriginalFeature & { id: string }
-export type Features = Feature[]
+export interface WebFeature extends OriginalFeature {
+  id: string
+  compatFeaturesEnhanced: EnhancedCompatFeature[]
+}
+
+export interface WebFeaturesPackage {
+  features: Array<WebFeature>
+  bcd: {
+    htmlUrl: string
+    publishedAt: string
+    version: string
+  }
+  wf: {
+    htmlUrl: string
+    publishedAt: string
+    version: string
+  }
+}
+
+export interface EnhancedCompatFeature {
+  name: string
+  mdnUrl: string
+}
 
 export type browserIdentifier =
   | "chrome"

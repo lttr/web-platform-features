@@ -17,13 +17,13 @@
 import { vAutoAnimate } from "@formkit/auto-animate"
 
 defineProps<{
-  features: Features
+  features: WebFeature[]
   displayYears: boolean
 }>()
 
 let lastYearSeen = -1
 
-function isDifferentYear(feature: Feature): boolean {
+function isDifferentYear(feature: WebFeature): boolean {
   const date = feature.status.baseline_low_date
   if (date) {
     const year = new Date(date).getFullYear()
@@ -35,7 +35,7 @@ function isDifferentYear(feature: Feature): boolean {
   return false
 }
 
-function getYear(feature: Feature): string {
+function getYear(feature: WebFeature): string {
   const date = feature.status.baseline_low_date
   if (date) {
     return new Date(date).getFullYear().toString()

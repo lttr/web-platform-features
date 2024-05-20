@@ -69,28 +69,38 @@
       <!-- eslint-disable-next-line vue/no-v-html -->
       <p class="mb-2" v-html="feature.description_html"></p>
 
-      <h3 class="text-sm font-semibold mb-1">Specification</h3>
-      <p class="mb-2">
-        <NuxtLink class="underline" :to="feature.spec">{{
-          feature.spec
-        }}</NuxtLink>
-      </p>
+      <h3 class="text-sm font-semibold mb-1">Specifications</h3>
+      <ul class="mb-2">
+        <li v-for="spec of specs" :key="spec" class="list-disc ms-6">
+          <NuxtLink class="underline" :to="spec">{{ feature.spec }}</NuxtLink>
+        </li>
+      </ul>
 
       <h3 class="text-sm font-semibold mb-1">Browser compat data names</h3>
       <ul class="mb-2">
         <li
-          v-for="compatFeature of feature.compat_features"
-          :key="compatFeature"
+          v-for="compatFeature of feature.compatFeaturesEnhanced"
+          :key="compatFeature.name"
           class="list-disc ms-6"
         >
-          <span class="me-3">{{ compatFeature }}</span>
-          <span>
-            <NuxtLink
-              class="underline"
-              :to="`https://caniuse.com/?search=${compatFeature}`"
-              >Can I Use</NuxtLink
-            >
-          </span>
+          <div class="flex gap-2">
+            <span>{{ compatFeature.name }}</span>
+
+            <span v-if="compatFeature.mdnUrl">
+              <NuxtLink class="underline" :to="compatFeature.mdnUrl">
+                MDN
+              </NuxtLink>
+            </span>
+
+            <span>
+              <NuxtLink
+                class="underline"
+                :to="`https://caniuse.com/?search=${compatFeature}`"
+              >
+                Can I Use
+              </NuxtLink>
+            </span>
+          </div>
         </li>
       </ul>
 
@@ -110,8 +120,12 @@
 
 <script lang="ts" setup>
 const { feature } = defineProps<{
-  feature: Feature
+  feature: WebFeature
 }>()
+
+const specs = computed(() =>
+  Array.isArray(feature.spec) ? feature.spec : [feature.spec],
+)
 
 const lowDateShort = computed(() => {
   if (feature.status.baseline_low_date) {

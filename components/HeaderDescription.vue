@@ -9,20 +9,33 @@
         >web-features</NuxtLink
       >
       project, version
-      <NuxtLink class="underline" :to="htmlUrl">{{ version }}</NuxtLink>
-      which was published on {{ publishedAt }}.
+      <NuxtLink class="underline" :to="wf.htmlUrl">{{ wf.version }}</NuxtLink>
+      which was published on {{ wfPublishedAt }}.
+    </div>
+    <div class="">
+      And from
+      <NuxtLink
+        class="underline"
+        to="https://github.com/mdn/browser-compat-data"
+        >browser-compat-data</NuxtLink
+      >
+      project, version
+      <NuxtLink class="underline" :to="bcd.htmlUrl">{{ bcd.version }}</NuxtLink>
+      which was published on {{ bcdPublishedAt }}.
     </div>
   </details>
 </template>
 
 <script lang="ts" setup>
-const props = defineProps<{
-  htmlUrl: string
-  version: string
-  publishedAt: string
+import type { WebFeaturesPackage } from "~/utils/web-features-output"
+
+const { bcd, wf } = defineProps<{
+  bcd: WebFeaturesPackage["bcd"]
+  wf: WebFeaturesPackage["wf"]
 }>()
 
-const publishedAt = computed(() => formatDateShort(props.publishedAt))
+const bcdPublishedAt = computed(() => formatDateShort(bcd.publishedAt))
+const wfPublishedAt = computed(() => formatDateShort(wf.publishedAt))
 
 function formatDateShort(date: string): string {
   if (!date) {
@@ -34,5 +47,3 @@ function formatDateShort(date: string): string {
   }).format(new Date(date))
 }
 </script>
-
-<style scoped></style>
