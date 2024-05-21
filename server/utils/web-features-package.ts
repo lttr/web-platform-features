@@ -19,9 +19,12 @@ interface GithubReleaseData {
 
 export const getWebFeaturesPackageCached = defineCachedFunction(
   async (_event: H3Event) => {
+    console.time("getWebFeaturesPackageCached")
+
     const data = (await $fetch(latestReleaseUrl, {
       headers: { "User-Agent": "web-features" },
     })) as GithubReleaseData
+
     const htmlUrl = data.html_url
     const tagName = data.tag_name
     const publishedAt = data.published_at
@@ -41,6 +44,9 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
           ...value,
         }),
       )
+
+      console.timeEnd("getWebFeaturesPackageCached")
+
       return {
         features: list,
         htmlUrl,

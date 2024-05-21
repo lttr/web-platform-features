@@ -12,6 +12,8 @@ interface GithubReleaseData {
 
 export const getBrowserCompatDataCached = defineCachedFunction(
   async (_event: H3Event) => {
+    console.time("getBrowserCompatDataCached")
+
     const data = (await $fetch(latestReleaseUrl, {
       headers: { "User-Agent": "web-features" },
     })) as GithubReleaseData
@@ -27,6 +29,9 @@ export const getBrowserCompatDataCached = defineCachedFunction(
       // and ofetch does not handle it at I need
       const response = await fetch(featuresDataUrl)
       const data = await response.json()
+
+      console.timeEnd("getBrowserCompatDataCached")
+
       return {
         bcd: data,
         htmlUrl,
