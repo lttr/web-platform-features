@@ -87,7 +87,7 @@
       <div>
         <h3 class="text-sm font-semibold mb-1">Links</h3>
         <NuxtLink
-          class="underline"
+          class="underline underline-offset-2"
           :to="`https://webstatus.dev/features/${feature.id}`"
         >
           Web platform tests status at webstatus.dev
@@ -98,7 +98,9 @@
         <h3 class="text-sm font-semibold mb-1">Specifications</h3>
         <ul>
           <li v-for="spec of specs" :key="spec" class="list-disc ms-6">
-            <NuxtLink class="underline" :to="spec">{{ feature.spec }}</NuxtLink>
+            <NuxtLink class="underline underline-offset-2" :to="spec">{{
+              feature.spec
+            }}</NuxtLink>
           </li>
         </ul>
       </div>
@@ -115,14 +117,17 @@
               <span>{{ compatFeature.name }}</span>
 
               <span v-if="compatFeature.mdnUrl">
-                <NuxtLink class="underline" :to="compatFeature.mdnUrl">
+                <NuxtLink
+                  class="underline underline-offset-2"
+                  :to="compatFeature.mdnUrl"
+                >
                   MDN
                 </NuxtLink>
               </span>
 
               <span>
                 <NuxtLink
-                  class="underline"
+                  class="underline underline-offset-2"
                   :to="`https://caniuse.com/?search=${compatFeature.name}`"
                 >
                   Can I Use
