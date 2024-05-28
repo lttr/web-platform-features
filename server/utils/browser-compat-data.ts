@@ -12,7 +12,7 @@ interface GithubReleaseData {
 
 export const getBrowserCompatDataCached = defineCachedFunction(
   async (_event: H3Event) => {
-    console.time("getBrowserCompatDataCached")
+    const startTime = performance.now()
 
     const data = (await $fetch(latestReleaseUrl, {
       headers: { "User-Agent": "web-features" },
@@ -30,7 +30,12 @@ export const getBrowserCompatDataCached = defineCachedFunction(
       const response = await fetch(featuresDataUrl)
       const data = await response.json()
 
-      console.timeEnd("getBrowserCompatDataCached")
+      const endTime = performance.now()
+      console.log(
+        "Fetching browser-compat-data took ",
+        Math.floor(endTime - startTime),
+        "ms",
+      )
 
       return {
         bcd: data,

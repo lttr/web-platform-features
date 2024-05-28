@@ -22,10 +22,21 @@ function getMdnUrl(name: string, bcd: any): string {
 }
 
 export default defineEventHandler(async (event) => {
+  const startTimeData = performance.now()
+
   const [webFeaturesPackage, browserCompatDataPackage] = await Promise.all([
     getWebFeaturesPackageCached(event),
     getBrowserCompatDataCached(event),
   ])
+
+  const endTimeData = performance.now()
+  console.log(
+    "Retrieving data for features took ",
+    Math.floor(endTimeData - startTimeData),
+    "ms",
+  )
+
+  const startTimeTransform = performance.now()
 
   const webFeaturesEnhanced = webFeaturesPackage.features as WebFeature[]
 
@@ -39,6 +50,13 @@ export default defineEventHandler(async (event) => {
       feature.compatFeaturesEnhanced = enhancedCompatFeatures
     }
   }
+
+  const endTimeTransform = performance.now()
+  console.log(
+    "Processing features data took ",
+    Math.floor(endTimeTransform - startTimeTransform),
+    "ms",
+  )
 
   return {
     features: webFeaturesEnhanced,

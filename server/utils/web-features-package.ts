@@ -19,7 +19,7 @@ interface GithubReleaseData {
 
 export const getWebFeaturesPackageCached = defineCachedFunction(
   async (_event: H3Event) => {
-    console.time("getWebFeaturesPackageCached")
+    const startTime = performance.now()
 
     const data = (await $fetch(latestReleaseUrl, {
       headers: { "User-Agent": "web-features" },
@@ -45,7 +45,12 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
         }),
       )
 
-      console.timeEnd("getWebFeaturesPackageCached")
+      const endTime = performance.now()
+      console.log(
+        "Fetching web features took ",
+        Math.floor(endTime - startTime),
+        "ms",
+      )
 
       return {
         features: list,
