@@ -8,15 +8,17 @@ export default defineNuxtConfig({
     kv: true,
     cache: true,
   },
-  routeRules: {
-    // Features page generated on demand, revalidates in background, cached for 1 hour
-    "/": { swr: 60 * 60 },
-  },
   vite: {
     vue: {
       script: {
         propsDestructure: true,
       },
+    },
+  },
+  $production: {
+    routeRules: {
+      // Features page generated on demand, revalidates in background, cached for 1 hour
+      "/": { swr: 60 * 60 },
     },
   },
 })
