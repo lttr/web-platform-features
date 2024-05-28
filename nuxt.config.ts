@@ -9,7 +9,8 @@ export default defineNuxtConfig({
     cache: true,
   },
   routeRules: {
-    "/": { swr: true },
+    // Features page generated on demand, revalidates in background, cached for 1 hour
+    "/": { swr: 60 * 60 },
   },
   vite: {
     vue: {
