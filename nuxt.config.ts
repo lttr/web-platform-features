@@ -8,6 +8,9 @@ export default defineNuxtConfig({
     kv: true,
     cache: true,
   },
+  routeRules: {
+    "/": { swr: true },
+  },
   vite: {
     vue: {
       script: {
