@@ -1,6 +1,6 @@
 <template>
   <details
-    class="baseline-indicator p-2 rounded bg-blue-50 dark:bg-slate-800"
+    class="baseline-indicator px-3 py-2 rounded bg-blue-50 dark:bg-slate-800"
     :class="{
       low: feature.status.baseline === 'low',
       high: feature.status.baseline === 'high',
@@ -64,47 +64,76 @@
       </div>
     </summary>
 
-    <div class="py-4">
-      <h3 class="text-sm font-semibold mb-1">Description</h3>
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p class="mb-2" v-html="feature.description_html"></p>
+    <div class="py-4 flex flex-col gap-4">
+      <div>
+        <h3 class="text-sm font-semibold mb-1">Description</h3>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <p v-html="feature.description_html"></p>
+      </div>
 
-      <h3 class="text-sm font-semibold mb-1">Specifications</h3>
-      <ul class="mb-2">
-        <li v-for="spec of specs" :key="spec" class="list-disc ms-6">
-          <NuxtLink class="underline" :to="spec">{{ feature.spec }}</NuxtLink>
-        </li>
-      </ul>
+      <div>
+        <h3 class="text-sm font-semibold mb-1">Support</h3>
+        <ul>
+          <li
+            v-for="browser of Object.keys(feature.status.support)"
+            :key="browser"
+            class="list-disc ms-6"
+          >
+            {{ browser }} {{ feature.status.support[browser] }}
+          </li>
+        </ul>
+      </div>
 
-      <h3 class="text-sm font-semibold mb-1">Browser compat data names</h3>
-      <ul class="mb-2">
-        <li
-          v-for="compatFeature of feature.compatFeaturesEnhanced"
-          :key="compatFeature.name"
-          class="list-disc ms-6"
+      <div>
+        <h3 class="text-sm font-semibold mb-1">Links</h3>
+        <NuxtLink
+          class="underline"
+          :to="`https://webstatus.dev/features/${feature.id}`"
         >
-          <div class="flex gap-2">
-            <span>{{ compatFeature.name }}</span>
+          Web platform tests status at webstatus.dev
+        </NuxtLink>
+      </div>
 
-            <span v-if="compatFeature.mdnUrl">
-              <NuxtLink class="underline" :to="compatFeature.mdnUrl">
-                MDN
-              </NuxtLink>
-            </span>
+      <div>
+        <h3 class="text-sm font-semibold mb-1">Specifications</h3>
+        <ul>
+          <li v-for="spec of specs" :key="spec" class="list-disc ms-6">
+            <NuxtLink class="underline" :to="spec">{{ feature.spec }}</NuxtLink>
+          </li>
+        </ul>
+      </div>
 
-            <span>
-              <NuxtLink
-                class="underline"
-                :to="`https://caniuse.com/?search=${compatFeature}`"
-              >
-                Can I Use
-              </NuxtLink>
-            </span>
-          </div>
-        </li>
-      </ul>
+      <div>
+        <h3 class="text-sm font-semibold mb-1">Browser compat data names</h3>
+        <ul>
+          <li
+            v-for="compatFeature of feature.compatFeaturesEnhanced"
+            :key="compatFeature.name"
+            class="list-disc ms-6"
+          >
+            <div class="flex gap-2">
+              <span>{{ compatFeature.name }}</span>
 
-      <details class="flex gap-2">
+              <span v-if="compatFeature.mdnUrl">
+                <NuxtLink class="underline" :to="compatFeature.mdnUrl">
+                  MDN
+                </NuxtLink>
+              </span>
+
+              <span>
+                <NuxtLink
+                  class="underline"
+                  :to="`https://caniuse.com/?search=${compatFeature.name}`"
+                >
+                  Can I Use
+                </NuxtLink>
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <details class="flex gap-2 border-slate-500 border-t pt-3">
         <summary class="w-100 cursor-pointer">
           <h3 class="inline text-sm font-semibold mb-1">Original data</h3>
         </summary>
