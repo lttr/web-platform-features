@@ -24,7 +24,7 @@ export interface WebFeaturesPackage {
 
 export interface EnhancedCompatFeature {
   name: string
-  mdnUrl: string
+  mdnUrl?: string
 }
 
 export type browserIdentifier =

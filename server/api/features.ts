@@ -14,11 +14,11 @@ function getValue(path: string, obj: any): unknown {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getMdnUrl(name: string, bcd: any): string {
+function getMdnUrl(name: string, bcd: any): string | undefined {
   const nestedObject = getValue(name, bcd) as {
     __compat: { mdn_url: string }
   }
-  return nestedObject.__compat.mdn_url
+  return nestedObject?.__compat?.mdn_url
 }
 
 export default defineEventHandler(async (event) => {
