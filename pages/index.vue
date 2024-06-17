@@ -3,70 +3,72 @@
     <div class="mt-2 mb-4">
       <HeaderDescription :wf="data.wf" :bcd="data.bcd" />
     </div>
-    <div class="flex flex-wrap items-center gap-5 mb-5">
-      <section class="flex items-center gap-3">
-        <span class="italic">Adoption:</span>
-        <HRadioGroup v-model="currentView" class="flex gap-4">
-          <HRadioGroupOption
-            v-for="view of views"
-            :key="view"
-            v-slot="{ checked }"
-            :value="view"
-            as="template"
-            @click="currentView = view"
-          >
-            <div
-              class="ring-1 ring-orange-300 dark:ring-orange-700 rounded-sm px-2 py-1 flex items-center gap-2 select-none"
-              :class="{
-                'bg-orange-300 ring-orange-500 dark:bg-orange-800 dark:ring-orange-700':
-                  checked,
-                'cursor-pointer': !checked,
-              }"
+    <search>
+      <div class="flex flex-wrap items-center gap-5 mb-5">
+        <section class="flex items-center gap-3">
+          <span class="italic">Adoption:</span>
+          <HRadioGroup v-model="currentView" class="flex gap-4">
+            <HRadioGroupOption
+              v-for="view of views"
+              :key="view"
+              v-slot="{ checked }"
+              :value="view"
+              as="template"
+              @click="currentView = view"
             >
-              <span
-                v-if="view === 'limited'"
-                class="w-5 h-5 bg-[url(~/assets/baseline/limited.svg)] dark:bg-[url(~/assets/baseline/limited-dark.svg)] bg-no-repeat bg-center"
-              ></span>
-              <span
-                v-if="view === 'low'"
-                class="w-5 h-5 bg-[url(~/assets/baseline/low.svg)] dark:bg-[url(~/assets/baseline/low-dark.svg)] bg-no-repeat bg-center"
-              ></span>
-              <span
-                v-if="view === 'high'"
-                class="w-5 h-5 bg-[url(~/assets/baseline/high.svg)] dark:bg-[url(~/assets/baseline/high-dark.svg)] bg-no-repeat bg-center"
-              ></span>
-              <span class="capitalize">{{ view }}</span> ({{ count[view] }})
-            </div>
-          </HRadioGroupOption>
-        </HRadioGroup>
-      </section>
+              <div
+                class="ring-1 ring-orange-300 dark:ring-orange-700 rounded-sm px-2 py-1 flex items-center gap-2 select-none"
+                :class="{
+                  'bg-orange-300 ring-orange-500 dark:bg-orange-800 dark:ring-orange-700':
+                    checked,
+                  'cursor-pointer': !checked,
+                }"
+              >
+                <span
+                  v-if="view === 'limited'"
+                  class="w-5 h-5 bg-[url(~/assets/baseline/limited.svg)] dark:bg-[url(~/assets/baseline/limited-dark.svg)] bg-no-repeat bg-center"
+                ></span>
+                <span
+                  v-if="view === 'low'"
+                  class="w-5 h-5 bg-[url(~/assets/baseline/low.svg)] dark:bg-[url(~/assets/baseline/low-dark.svg)] bg-no-repeat bg-center"
+                ></span>
+                <span
+                  v-if="view === 'high'"
+                  class="w-5 h-5 bg-[url(~/assets/baseline/high.svg)] dark:bg-[url(~/assets/baseline/high-dark.svg)] bg-no-repeat bg-center"
+                ></span>
+                <span class="capitalize">{{ view }}</span> ({{ count[view] }})
+              </div>
+            </HRadioGroupOption>
+          </HRadioGroup>
+        </section>
 
-      <section class="flex items-center gap-3">
-        <span class="italic">Sorting:</span>
-        <div class="min-w-64">
-          <USelectMenu
-            v-model="sortBy"
-            :options="sortingOptions"
-            value-attribute="value"
-            option-attribute="label"
+        <section class="flex items-center gap-3">
+          <span class="italic">Sorting:</span>
+          <div class="min-w-64">
+            <USelectMenu
+              v-model="sortBy"
+              :options="sortingOptions"
+              value-attribute="value"
+              option-attribute="label"
+            />
+          </div>
+        </section>
+
+        <section class="flex items-center gap-3">
+          <span class="italic">Search:</span>
+          <UInput
+            v-model="searchPattern"
+            color="primary"
+            variant="outline"
+            placeholder="Search..."
           />
-        </div>
-      </section>
-
-      <section class="flex items-center gap-3">
-        <span class="italic">Search:</span>
-        <UInput
-          v-model="searchPattern"
-          color="primary"
-          variant="outline"
-          placeholder="Search..."
-        />
-      </section>
-    </div>
-    <FeaturesList
-      :features="filteredFeatures"
-      :display-years="isSortedByDate && !searchPattern"
-    />
+        </section>
+      </div>
+      <FeaturesList
+        :features="filteredFeatures"
+        :display-years="isSortedByDate && !searchPattern"
+      />
+    </search>
   </div>
 </template>
 
@@ -277,5 +279,3 @@ watch(searchPattern, () => {
   }
 })
 </script>
-
-<style scoped></style>

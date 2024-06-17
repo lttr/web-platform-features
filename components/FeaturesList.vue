@@ -1,6 +1,6 @@
 <template>
   <ul v-auto-animate class="flex flex-col gap-2">
-    <li v-for="feature of features" :key="feature.id" class="max-w-[80ch]">
+    <li v-for="feature of features" :key="feature.id" class="max-w-[82ch]">
       <div
         v-if="displayYears && isDifferentYear(feature)"
         :id="`year-${getYear(feature)}`"
