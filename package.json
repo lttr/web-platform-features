@@ -17,7 +17,6 @@
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
     "@mdn/browser-compat-data": "^5.5.37",
-    "@nuxt/eslint": "^0.3.13",
     "@nuxt/ui": "^2.17.0",
     "@nuxthub/core": "^0.7.0",
     "fuse.js": "^7.0.0",
@@ -28,7 +27,10 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@lttr/nuxt-config-eslint": "^0.1.0",
+    "@nuxt/eslint": "^0.3.13",
     "@total-typescript/ts-reset": "^0.5.1",
+    "eslint": "^9.6.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-vue-scoped-css": "^2.8.1",
     "eslint-plugin-vuejs-accessibility": "^2.3.1",
