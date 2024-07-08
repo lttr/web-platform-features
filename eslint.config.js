@@ -44,7 +44,7 @@ export default withNuxt()
   // eslint-plugin-vuejs-accessibility recommended rules
   // https://vue-a11y.github.io/eslint-plugin-vuejs-accessibility/
 
-  .append([pluginVueA11y.configs["flat/recommended"]])
+  .append(pluginVueA11y.configs["flat/recommended"])
   .override("vuejs-accessibility:setup:with-files-rules-and-parser", {
     name: "vuejs-accessibility/custom",
     rules: {
