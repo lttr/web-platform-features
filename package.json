@@ -13,7 +13,7 @@
     "preview": "nuxt preview",
     "typecheck": "nuxi typecheck"
   },
-  "packageManager": "pnpm@9.1.1+sha256.9551e803dcb7a1839fdf5416153a844060c7bce013218ce823410532504ac10b",
+  "packageManager": "pnpm@9.7.0+sha512.dc09430156b427f5ecfc79888899e1c39d2d690f004be70e05230b72cb173d96839587545d09429b55ac3c429c801b4dc3c0e002f653830a420fa2dd4e3cf9cf",
   "dependencies": {
     "@formkit/auto-animate": "^0.8.2",
     "@nuxt/ui": "^2.17.0",
