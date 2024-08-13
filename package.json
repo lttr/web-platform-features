@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "@lttr/web-platform-features",
   "private": true,
   "type": "module",
   "scripts": {
@@ -18,7 +18,6 @@
     "@formkit/auto-animate": "^0.8.2",
     "@mdn/browser-compat-data": "^5.5.37",
     "@nuxt/ui": "^2.17.0",
-    "@nuxthub/core": "^0.7.0",
     "fuse.js": "^7.0.0",
     "nuxt": "^3.12.3",
     "vue": "^3.4.31",
