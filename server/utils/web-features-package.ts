@@ -3,6 +3,7 @@ import {
   type WebFeatureInputWithId,
   WebFeaturesRecordInputSchema,
 } from "~/utils/web-features-input"
+import type { OriginalFeatures } from "~/utils/web-features-output"
 
 // Alternatively: data from a CDN
 // const webFeaturesUrl = "https://cdn.jsdelivr.net/npm/web-features/index.json"
@@ -15,6 +16,12 @@ interface GithubReleaseData {
   html_url: string
   published_at: string
   tag_name: string
+}
+
+interface WebFeaturesData {
+  features: OriginalFeatures
+  snapshots: Array<unknown>
+  groups: Array<unknown>
 }
 
 export const getWebFeaturesPackageCached = defineCachedFunction(
@@ -36,13 +43,15 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
       // The URL is ment to be used for data downloading inside browser
       // and ofetch does not handle it at I need
       const response = await fetch(featuresDataUrl)
-      const data = await response.json()
-      const parsedData = WebFeaturesRecordInputSchema.parse(data)
+      const data = (await response.json()) as WebFeaturesData
+      const parsedData = WebFeaturesRecordInputSchema.parse(data.features)
       const list: WebFeatureInputWithId[] = Object.entries(parsedData).map(
-        ([key, value]) => ({
-          id: key,
-          ...value,
-        }),
+        ([key, feature]) => {
+          return {
+            id: key,
+            ...feature,
+          }
+        },
       )
 
       const endTime = performance.now()

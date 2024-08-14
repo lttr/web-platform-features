@@ -41,6 +41,20 @@
           </li>
         </ul>
       </section>
+
+      <section>
+        <h3 class="text-sm font-semibold mb-1">This project</h3>
+        <p>
+          was build using Nuxt framework. Source code is on
+          <NuxtLink
+            class="underline underline-offset-2"
+            to="https://github.com/lttr/web-platform-features/"
+            >Github</NuxtLink
+          >.
+        </p>
+      </section>
+
+      <hr />
     </div>
   </details>
 </template>

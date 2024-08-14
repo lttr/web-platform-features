@@ -3,7 +3,7 @@
     <div class="mt-2 mb-4">
       <HeaderDescription :wf="data.wf" :bcd="data.bcd" />
     </div>
-    <search>
+    <div>
       <div class="flex flex-wrap items-center gap-5 mb-5">
         <section class="flex items-center gap-3">
           <span class="italic">Adoption:</span>
@@ -64,11 +64,14 @@
           />
         </section>
       </div>
+      <div>
+        {{ }}
+      </div>
       <FeaturesList
         :features="filteredFeatures"
         :display-years="isSortedByDate && !searchPattern"
       />
-    </search>
+    </div>
   </div>
 </template>
 

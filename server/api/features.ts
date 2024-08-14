@@ -21,6 +21,12 @@ function getMdnUrl(name: string, bcd: any): string | undefined {
   return nestedObject?.__compat?.mdn_url
 }
 
+// Sanitize date because of
+// https://github.com/web-platform-dx/web-features/pull/1398
+function sanitizeDate(date: string | undefined): string | undefined {
+  return date?.replace("≤", "")
+}
+
 export default defineEventHandler(async (event) => {
   const startTimeData = performance.now()
 
@@ -41,6 +47,13 @@ export default defineEventHandler(async (event) => {
   const webFeaturesEnhanced = webFeaturesPackage.features as WebFeature[]
 
   for (const feature of webFeaturesEnhanced) {
+    feature.status.baseline_low_date = sanitizeDate(
+      feature.status.baseline_low_date,
+    )
+    feature.status.baseline_high_date = sanitizeDate(
+      feature.status.baseline_high_date,
+    )
+
     if (feature.compat_features) {
       const enhancedCompatFeatures: EnhancedCompatFeature[] = []
       for (const name of feature.compat_features) {

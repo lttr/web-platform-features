@@ -75,7 +75,7 @@
         <h3 class="text-sm font-semibold mb-1">Support</h3>
         <ul>
           <li
-            v-for="browser of Object.keys(feature.status.support)"
+            v-for="browser of objectKeys(feature.status.support)"
             :key="browser"
             class="list-disc ms-6"
           >
@@ -153,6 +153,8 @@
 </template>
 
 <script lang="ts" setup>
+import { objectKeys, ENGINES } from "#imports"
+
 const { feature } = defineProps<{
   feature: WebFeature
 }>()

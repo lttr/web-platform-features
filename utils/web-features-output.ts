@@ -1,7 +1,10 @@
-import type webFeatures from "web-features"
+import type { features, groups, snapshots } from "web-features"
 
-export type OriginalFeatures = typeof webFeatures
+export type OriginalFeatures = typeof features
 export type OriginalFeature = OriginalFeatures[string]
+
+export type OriginalGroup = typeof groups
+export type OriginalSnapshot = typeof snapshots
 
 export interface WebFeature extends OriginalFeature {
   id: string

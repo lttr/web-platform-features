@@ -7,14 +7,6 @@ export default defineNuxtConfig({
     prefix: "H",
   },
 
-  vite: {
-    vue: {
-      script: {
-        propsDestructure: true,
-      },
-    },
-  },
-
   $production: {
     routeRules: {
       // Features page generated on demand, revalidates in background, cached for 1 hour
