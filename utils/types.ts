@@ -1,5 +1,4 @@
-export interface WebFeature extends OriginalFeature {
-  id: string
+export interface WebFeature extends WebFeatureInputWithId {
   compatFeaturesEnhanced: EnhancedCompatFeature[]
 }
 

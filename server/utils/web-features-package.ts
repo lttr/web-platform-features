@@ -1,8 +1,6 @@
 import type { H3Event } from "h3"
-import {
-  type WebFeatureInputWithId,
-  WebFeaturesRecordInputSchema,
-} from "~/utils/web-features-input"
+import type { WebFeature } from "~/utils/types"
+import { WebFeaturesRecordInputSchema } from "~/utils/web-features-input"
 import type { OriginalFeatures } from "~/utils/web-features-output"
 
 // Alternatively: data from a CDN
@@ -45,10 +43,11 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
       const response = await fetch(featuresDataUrl)
       const data = (await response.json()) as WebFeaturesData
       const parsedData = WebFeaturesRecordInputSchema.parse(data.features)
-      const list: WebFeatureInputWithId[] = Object.entries(parsedData).map(
+      const list: WebFeature[] = Object.entries(parsedData).map(
         ([key, feature]) => {
           return {
             id: key,
+            compatFeaturesEnhanced: [],
             ...feature,
           }
         },

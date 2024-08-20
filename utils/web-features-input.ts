@@ -36,4 +36,6 @@ export const WebFeaturesRecordInputSchema = z.record(featureDataSchema)
 
 export type WebFeatureInput = z.infer<typeof WebFeatureInputSchema>
 
-export type WebFeatureInputWithId = WebFeatureInput & { id: string }
+export interface WebFeatureInputWithId extends WebFeatureInput {
+  id: string
+}

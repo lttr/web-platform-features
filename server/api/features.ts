@@ -1,8 +1,4 @@
-import type {
-  EnhancedCompatFeature,
-  WebFeature,
-} from "~/utils/web-features-output"
-import { getBrowserCompatDataCached } from "../utils/browser-compat-data"
+import type { WebFeature } from "~/utils/types"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getValue(path: string, obj: any): unknown {
@@ -44,9 +40,7 @@ export default defineEventHandler(async (event) => {
 
   const startTimeTransform = performance.now()
 
-  const webFeaturesEnhanced = webFeaturesPackage.features as WebFeature[]
-
-  for (const feature of webFeaturesEnhanced) {
+  for (const feature of webFeaturesPackage.features as WebFeature[]) {
     feature.status.baseline_low_date = sanitizeDate(
       feature.status.baseline_low_date,
     )
@@ -72,7 +66,7 @@ export default defineEventHandler(async (event) => {
   )
 
   return {
-    features: webFeaturesEnhanced,
+    features: webFeaturesPackage.features,
     bcd: {
       htmlUrl: browserCompatDataPackage.htmlUrl,
       publishedAt: browserCompatDataPackage.publishedAt,
