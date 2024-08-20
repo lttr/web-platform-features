@@ -19,7 +19,7 @@
     "@nuxt/ui": "^2.18.4",
     "fuse.js": "^7.0.0",
     "nuxt": "^3.12.4",
-    "vue": "3.5.0-beta.1",
+    "vue": "^3.4.38",
     "vue-router": "^4.4.3",
     "web-features": "^1.1.0",
     "zod": "^3.23.8"
@@ -28,6 +28,9 @@
     "@lttr/nuxt-config-eslint": "^0.3.0",
     "@nuxt/eslint": "^0.5.0",
     "@total-typescript/ts-reset": "^0.5.1",
+    "@vueuse/core": "^11.0.0",
+    "@vueuse/nuxt": "^11.0.0",
+    "@vueuse/router": "^11.0.0",
     "eslint": "^9.9.0",
     "nuxt-headlessui": "^1.2.0",
     "prettier": "^3.3.3",

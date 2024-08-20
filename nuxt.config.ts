@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
-  modules: ["@nuxt/eslint", "@nuxt/ui", "nuxt-headlessui"],
+  modules: ["@nuxt/eslint", "@nuxt/ui", "nuxt-headlessui", "@vueuse/nuxt"],
 
   headlessui: {
     prefix: "H",
@@ -11,6 +11,14 @@ export default defineNuxtConfig({
     routeRules: {
       // Features page generated on demand, revalidates in background, cached for 1 hour
       "/": { swr: 60 * 60 },
+    },
+  },
+
+  vite: {
+    vue: {
+      features: {
+        propsDestructure: true,
+      },
     },
   },
 

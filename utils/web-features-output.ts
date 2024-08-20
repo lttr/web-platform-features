@@ -6,11 +6,6 @@ export type OriginalFeature = OriginalFeatures[string]
 export type OriginalGroup = typeof groups
 export type OriginalSnapshot = typeof snapshots
 
-export interface WebFeature extends OriginalFeature {
-  id: string
-  compatFeaturesEnhanced: EnhancedCompatFeature[]
-}
-
 export interface WebFeaturesPackage {
   features: Array<WebFeature>
   bcd: {
