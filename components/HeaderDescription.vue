@@ -43,6 +43,29 @@
       </section>
 
       <section>
+        <h3 class="text-sm font-semibold mb-1">Similar projects</h3>
+        <p>Other dashboards like this one.</p>
+        <ul>
+          <li class="list-disc ms-6">
+            <NuxtLink
+              class="underline underline-offset-2"
+              to="https://web-platform-dx.github.io/web-features-explorer/"
+            >
+              https://web-platform-dx.github.io/web-features-explorer/
+            </NuxtLink>
+          </li>
+          <li class="list-disc ms-6">
+            <NuxtLink
+              class="underline underline-offset-2"
+              to="https://webstatus.dev/"
+            >
+              https://webstatus.dev/
+            </NuxtLink>
+          </li>
+        </ul>
+      </section>
+
+      <section>
         <h3 class="text-sm font-semibold mb-1">This project</h3>
         <p>
           was build using Nuxt framework. Source code is on
