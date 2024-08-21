@@ -1,10 +1,21 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
-  modules: ["@nuxt/eslint", "@nuxt/ui", "nuxt-headlessui", "@vueuse/nuxt"],
+  modules: [
+    "@nuxt/eslint",
+    "@nuxt/ui",
+    "nuxt-headlessui",
+    "@vueuse/nuxt",
+    "@nuxtjs/plausible",
+  ],
 
   headlessui: {
     prefix: "H",
+  },
+
+  plausible: {
+    ignoredHostnames: ["localhost"],
+    apiHost: "https://plausible.lttr.cz",
   },
 
   $production: {
