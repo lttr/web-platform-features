@@ -7,7 +7,7 @@ providers = ["node"]
 
 # Optional: already as "engines": { "node" } in package.json
 [variables]
-NIXPACKS_NODE_VERSION = 20
+NIXPACKS_NODE_VERSION = '20'
 
 # Optional: already as start script in package.json
 [start]
