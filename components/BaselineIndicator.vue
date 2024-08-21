@@ -142,16 +142,18 @@
         </ul>
       </div>
 
-      <details class="flex gap-2 border-slate-500 border-t pt-3">
-        <summary class="w-100 cursor-pointer">
-          <h3 class="inline text-sm font-semibold mb-1">Original data</h3>
-        </summary>
-        <div>
-          <pre class="whitespace-pre-wrap overflow-scroll">{{
-            JSON.stringify(feature, null, 2)
-          }}</pre>
-        </div>
-      </details>
+      <DevOnly>
+        <details class="flex gap-2 border-slate-500 border-t pt-3">
+          <summary class="w-100 cursor-pointer">
+            <h3 class="inline text-sm font-semibold mb-1">Original data</h3>
+          </summary>
+          <div>
+            <pre class="whitespace-pre-wrap overflow-scroll">{{
+              JSON.stringify(feature, null, 2)
+            }}</pre>
+          </div>
+        </details>
+      </DevOnly>
     </div>
   </details>
 </template>
