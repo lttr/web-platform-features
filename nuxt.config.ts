@@ -7,7 +7,15 @@ export default defineNuxtConfig({
     "nuxt-headlessui",
     "@vueuse/nuxt",
     "@nuxtjs/plausible",
+    "@nuxtjs/seo",
   ],
+
+  site: {
+    url: "https://web-features.lttr.cz",
+    name: "Web features",
+    description: "Dashboard of new features available on the web.",
+    defaultLocale: "en",
+  },
 
   headlessui: {
     prefix: "H",
