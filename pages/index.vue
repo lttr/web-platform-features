@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="mt-2 mb-4">
+    <div class="mt-2 mb-1 md:mb-4">
       <HeaderDescription :wf="data.wf" :bcd="data.bcd" />
     </div>
     <FeaturesFilter

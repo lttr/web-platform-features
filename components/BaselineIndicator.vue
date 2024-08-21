@@ -6,7 +6,9 @@
       high: feature.status.baseline === 'high',
     }"
   >
-    <summary class="flex justify-between flex-wrap items-center cursor-pointer">
+    <summary
+      class="flex justify-between flex-wrap items-center cursor-pointer gap-2"
+    >
       <div class="flex gap-3 items-center">
         <h2 class="font-semibold max-w-[25ch]">{{ feature.name }}</h2>
       </div>
@@ -40,27 +42,29 @@
             <span class="italic text-sm">Widely available</span>
           </span>
         </div>
-        <span
-          v-for="{ name, browsers } of ENGINES"
-          :key="name"
-          class="engine"
-          :title="engineTitle(browsers)"
-        >
+        <div class="flex">
           <span
-            v-for="browser of browsers"
-            :key="browser.ids[0]"
-            class="browser"
-            :class="`${browser.ids[0]} ${supported(browser) ? 'supported' : ''}`"
-            role="img"
-            :aria-label="`${browser.name} ${supported(browser) ? 'check' : 'cross'}`"
-          ></span>
-        </span>
+            v-for="{ name, browsers } of ENGINES"
+            :key="name"
+            class="engine"
+            :title="engineTitle(browsers)"
+          >
+            <span
+              v-for="browser of browsers"
+              :key="browser.ids[0]"
+              class="browser"
+              :class="`${browser.ids[0]} ${supported(browser) ? 'supported' : ''}`"
+              role="img"
+              :aria-label="`${browser.name} ${supported(browser) ? 'check' : 'cross'}`"
+            ></span>
+          </span>
+        </div>
 
         <span :title="`Supported since ${lowDateFull}`" class="min-w-[7ch]">
           {{ lowDateShort }}
         </span>
 
-        <UIcon class="chevron" name="i-heroicons-chevron-down" />
+        <UIcon class="chevron ml-auto" name="i-heroicons-chevron-down" />
       </div>
     </summary>
 
@@ -114,9 +118,9 @@
             class="list-disc ms-6"
           >
             <div class="flex gap-2">
-              <span>{{ compatFeature.name }}</span>
+              <span class="truncate">{{ compatFeature.name }}</span>
 
-              <span v-if="compatFeature.mdnUrl">
+              <span v-if="compatFeature.mdnUrl" class="min-w-fit">
                 <NuxtLink
                   class="underline underline-offset-2"
                   :to="compatFeature.mdnUrl"
@@ -125,7 +129,7 @@
                 </NuxtLink>
               </span>
 
-              <span>
+              <span class="min-w-fit">
                 <NuxtLink
                   class="underline underline-offset-2"
                   :to="`https://caniuse.com/?search=${compatFeature.name}`"
@@ -143,7 +147,7 @@
           <h3 class="inline text-sm font-semibold mb-1">Original data</h3>
         </summary>
         <div>
-          <pre class="whitespace-pre-wrap">{{
+          <pre class="whitespace-pre-wrap overflow-scroll">{{
             JSON.stringify(feature, null, 2)
           }}</pre>
         </div>

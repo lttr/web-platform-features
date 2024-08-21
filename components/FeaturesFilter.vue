@@ -1,8 +1,8 @@
 <template>
-  <div class="flex flex-wrap items-center gap-5 mb-5">
+  <div class="flex flex-wrap items-center gap-5 mb-2 md:mb-5">
     <section class="flex items-center gap-3">
-      <span class="italic">Adoption:</span>
-      <HRadioGroup v-model="currentView" class="flex gap-4">
+      <span class="italic w-16 md:w-auto">Adoption:</span>
+      <HRadioGroup v-model="currentView" class="flex flex-wrap gap-4">
         <HRadioGroupOption
           v-for="view of views"
           :key="view"
@@ -38,7 +38,7 @@
     </section>
 
     <section class="flex items-center gap-3">
-      <span class="italic">Sorting:</span>
+      <span class="italic w-16 md:w-auto">Sorting:</span>
       <div class="min-w-64">
         <USelectMenu
           v-model="sortBy"
@@ -50,7 +50,7 @@
     </section>
 
     <section class="flex items-center gap-3">
-      <span class="italic">Search:</span>
+      <span class="italic w-16 md:w-auto">Search:</span>
       <UInput
         ref="search"
         :value="searchPattern"
@@ -59,13 +59,13 @@
         placeholder="Search..."
         @input="onSearchChange"
       />
-      <div class="flex items-center gap-0.5 text-gray-300">
+      <div class="hidden md:flex items-center gap-0.5 text-gray-300">
         <UKbd>{{ metaSymbol }}</UKbd>
         <UKbd>K</UKbd>
       </div>
     </section>
 
-    <section class="ml-8">
+    <section class="ml-auto md:ml-8">
       <UButton variant="outline" @click="onResetFilter">Reset filters</UButton>
     </section>
   </div>
