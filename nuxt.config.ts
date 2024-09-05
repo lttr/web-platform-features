@@ -33,14 +33,5 @@ export default defineNuxtConfig({
     },
   },
 
-  vite: {
-    vue: {
-      features: {
-        propsDestructure: true,
-      },
-    },
-  },
-
   compatibilityDate: "2024-07-08",
 })
-
