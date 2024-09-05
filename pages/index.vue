@@ -74,7 +74,7 @@ const { data } = await useFetch<WebFeaturesPackage>("/api/features", {
 
 // Computed data
 
-const filtered = shallowRef<WebFeature[]>([])
+const searchedFeatures = shallowRef<WebFeature[]>([])
 
 const features = computed(() => data.value?.features || [])
 const currentSortingFunction = computed(() => sortingFunctions[sortBy.value])
@@ -107,8 +107,8 @@ const counts = {
 }
 
 const filteredFeatures = computed(() => {
-  if (filtered.value.length) {
-    return filtered.value
+  if (searchedFeatures.value.length) {
+    return searchedFeatures.value
   }
   switch (currentView.value) {
     case "all":
@@ -127,25 +127,38 @@ const filteredFeatures = computed(() => {
 
 // Searching
 
-let fuse: Fuse<WebFeature> | null = null
+let fuseAll: Fuse<WebFeature> | null = null
+let fuseLimited: Fuse<WebFeature> | null = null
+let fuseHigh: Fuse<WebFeature> | null = null
+let fuseLow: Fuse<WebFeature> | null = null
 
 onMounted(() => {
   const fuseOptions = {
     keys: [{ name: "name", weight: 5 }, "description", "compat_features"],
     includeScore: true,
+    useExtendedSearch: true,
     threshold: 0.4,
+    verbose: true,
   }
-  fuse = new Fuse(all.value, fuseOptions)
+  fuseAll = new Fuse(all.value, fuseOptions)
+  fuseLimited = new Fuse(limited.value, fuseOptions)
+  fuseHigh = new Fuse(high.value, fuseOptions)
+  fuseLow = new Fuse(low.value, fuseOptions)
 })
 
-watch(searchPattern, () => {
+watchEffect(() => {
   if (searchPattern.value === "") {
-    filtered.value = []
+    searchedFeatures.value = []
   } else {
-    if (fuse) {
-      currentView.value = "all"
-      const results = fuse.search(searchPattern.value)
-      filtered.value = results.map((x) => x.item).toSorted()
+    if (fuseAll && fuseLimited && fuseHigh && fuseLow) {
+      const fuseInstance = {
+        limited: fuseLimited,
+        low: fuseLow,
+        high: fuseHigh,
+        all: fuseAll,
+      }[currentView.value]
+      const results = fuseInstance.search(searchPattern.value)
+      searchedFeatures.value = results.map((x) => x.item).toSorted()
     }
   }
 })

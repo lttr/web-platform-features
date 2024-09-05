@@ -50,7 +50,7 @@
     </section>
 
     <section class="flex items-center gap-3">
-      <span class="italic w-16 md:w-auto">Search:</span>
+      <span class="italic w-16 md:w-auto">Search (fuzzy):</span>
       <UInput
         ref="search"
         :value="searchPattern"
@@ -91,7 +91,6 @@ function onResetFilter() {
 }
 
 function searchChange(value: string) {
-  console.log("emiting", value)
   emit("update:searchPattern", value)
 }
 const debouncedSearchChange = useDebounceFn(searchChange, 200)
