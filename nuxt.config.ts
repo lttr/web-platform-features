@@ -23,6 +23,9 @@ export default defineNuxtConfig({
 
   plausible: {
     ignoredHostnames: ["localhost"],
+    // disables console log of ignored events
+    // https://github.com/Barbapapazes/plausible-tracker/blob/main/src/plausible.ts#L51C29-L51C39
+    logIgnoredEvents: true,
     apiHost: "https://plausible.lttr.cz",
   },
 
