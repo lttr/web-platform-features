@@ -1,25 +1,40 @@
 <template>
-  <ul v-auto-animate class="flex flex-col gap-2">
-    <li v-for="feature of features" :key="feature.id" class="max-w-[82ch]">
-      <div
-        v-if="displayYears && isDifferentYear(feature)"
-        :id="`year-${getYear(feature)}`"
-        class="my-3 text-2xl"
-      >
-        {{ getYear(feature) }}
-      </div>
-      <BaselineIndicator :feature />
-    </li>
-  </ul>
+  <div v-bind="containerProps">
+    <div v-bind="wrapperProps">
+      <ul v-auto-animate class="flex flex-col gap-2">
+        <li
+          v-for="{ data: feature } of list"
+          :key="feature.id"
+          class="max-w-[86ch]"
+        >
+          <div
+            v-if="displayYears && isDifferentYear(feature)"
+            :id="`year-${getYear(feature)}`"
+            class="my-3 text-2xl"
+          >
+            {{ getYear(feature) }}
+          </div>
+          <BaselineIndicator :feature />
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { vAutoAnimate } from "@formkit/auto-animate"
 
-defineProps<{
+const props = defineProps<{
   features: WebFeature[]
   displayYears: boolean
 }>()
+
+const inputList = computed(() => props.features)
+
+const { list, containerProps, wrapperProps } = useVirtualList(inputList, {
+  itemHeight: 65,
+  overscan: 20,
+})
 
 let lastYearSeen = -1
 

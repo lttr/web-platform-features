@@ -1,16 +1,18 @@
 <template>
   <details
+    ref="details"
     class="baseline-indicator px-3 py-2 rounded bg-blue-50 dark:bg-slate-800"
     :class="{
       low: feature.status.baseline === 'low',
       high: feature.status.baseline === 'high',
     }"
+    @toggle="open = !open"
   >
     <summary
       class="flex justify-between flex-wrap items-center cursor-pointer gap-2"
     >
       <div class="flex gap-3 items-center">
-        <h2 class="font-semibold max-w-[25ch]">{{ feature.name }}</h2>
+        <h2 class="font-semibold max-w-[30ch] truncate">{{ feature.name }}</h2>
       </div>
 
       <div class="flex flex-wrap gap-2 items-center">
@@ -68,7 +70,7 @@
       </div>
     </summary>
 
-    <div class="py-4 flex flex-col gap-4">
+    <div v-if="open" class="py-4 flex flex-col gap-4">
       <div>
         <h3 class="text-sm font-semibold mb-1">Description</h3>
         <!-- eslint-disable-next-line vue/no-v-html -->
@@ -164,6 +166,8 @@ import { objectKeys, ENGINES } from "#imports"
 const { feature } = defineProps<{
   feature: WebFeature
 }>()
+
+const open = ref(false)
 
 const specs = computed(() =>
   Array.isArray(feature.spec) ? feature.spec : [feature.spec],

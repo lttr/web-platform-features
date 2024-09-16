@@ -76,7 +76,7 @@ const views = Views
 
 defineProps<{
   counts: {
-    [view in View]: ComputedRef<number>
+    [view in View]: number
   }
   searchPattern: string
 }>()

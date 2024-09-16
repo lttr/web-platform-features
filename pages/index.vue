@@ -12,6 +12,7 @@
     />
     <div>
       <FeaturesList
+        class="feature-list"
         :features="filteredFeatures"
         :display-years="isSortedByDate && !searchPattern"
       />
@@ -45,6 +46,14 @@ const querySearchPattern = route.query.search as string
 const initialSearchPattern: string = querySearchPattern ?? DEFAULT_SEARCH
 const searchPattern = ref<string>(initialSearchPattern)
 
+const fuseOptions = {
+  keys: [{ name: "name", weight: 5 }, "description", "compat_features"],
+  includeScore: true,
+  useExtendedSearch: true,
+  threshold: 0.4,
+  verbose: true,
+}
+
 function onResetFilter() {
   currentView.value = DEFAULT_VIEW
   sortBy.value = DEFAULT_SORT_BY
@@ -74,94 +83,75 @@ const { data } = await useFetch<WebFeaturesPackage>("/api/features", {
 
 // Computed data
 
-const searchedFeatures = shallowRef<WebFeature[]>([])
-
 const features = computed(() => data.value?.features || [])
 const currentSortingFunction = computed(() => sortingFunctions[sortBy.value])
 const isSortedByDate = computed(() => sortBy.value.includes("Date"))
 
-const all = computed(() =>
-  features.value.toSorted(currentSortingFunction.value),
-)
-const limited = computed(() =>
-  features.value
-    .filter((f: WebFeature) => !f.status.baseline)
-    .toSorted(currentSortingFunction.value),
-)
-const low = computed(() =>
-  features.value
-    .filter((f: WebFeature) => f.status.baseline === "low")
-    .toSorted(currentSortingFunction.value),
-)
-const high = computed(() =>
-  features.value
-    .filter((f: WebFeature) => f.status.baseline === "high")
-    .toSorted(currentSortingFunction.value),
-)
-
-const counts = {
-  all: computed(() => all.value.length),
-  limited: computed(() => limited.value.length),
-  low: computed(() => low.value.length),
-  high: computed(() => high.value.length),
-}
-
-const filteredFeatures = computed(() => {
-  if (searchedFeatures.value.length) {
-    return searchedFeatures.value
-  }
-  switch (currentView.value) {
-    case "all":
-      return all.value
-    case "limited":
-      return limited.value
-    case "low":
-      return low.value
-    case "high":
-      return high.value
-    default:
-      currentView.value satisfies never
-      return []
-  }
+const counts = ref({
+  all: 0,
+  limited: 0,
+  low: 0,
+  high: 0,
 })
 
-// Searching
+const filteredFeatures = shallowRef<WebFeature[]>([])
 
-let fuseAll: Fuse<WebFeature> | null = null
-let fuseLimited: Fuse<WebFeature> | null = null
-let fuseHigh: Fuse<WebFeature> | null = null
-let fuseLow: Fuse<WebFeature> | null = null
+watch(
+  [features, currentSortingFunction, currentView, searchPattern],
+  () => {
+    let limited = 0
+    let low = 0
+    let high = 0
 
-onMounted(() => {
-  const fuseOptions = {
-    keys: [{ name: "name", weight: 5 }, "description", "compat_features"],
-    includeScore: true,
-    useExtendedSearch: true,
-    threshold: 0.4,
-    verbose: true,
-  }
-  fuseAll = new Fuse(all.value, fuseOptions)
-  fuseLimited = new Fuse(limited.value, fuseOptions)
-  fuseHigh = new Fuse(high.value, fuseOptions)
-  fuseLow = new Fuse(low.value, fuseOptions)
-})
+    let tempFilteredFeatures: WebFeature[] = []
 
-watchEffect(() => {
-  if (searchPattern.value === "") {
-    searchedFeatures.value = []
-  } else {
-    if (fuseAll && fuseLimited && fuseHigh && fuseLow) {
-      const fuseInstance = {
-        limited: fuseLimited,
-        low: fuseLow,
-        high: fuseHigh,
-        all: fuseAll,
-      }[currentView.value]
-      const results = fuseInstance.search(searchPattern.value)
-      searchedFeatures.value = results.map((x) => x.item).toSorted()
+    for (const feature of features.value) {
+      if (!feature.status.baseline) {
+        limited += 1
+      }
+      if (feature.status.baseline === "low") {
+        low += 1
+      }
+      if (feature.status.baseline === "high") {
+        high += 1
+      }
+
+      if (currentView.value === "all") {
+        tempFilteredFeatures.push(feature)
+      } else if (currentView.value === "limited") {
+        if (!feature.status.baseline) {
+          tempFilteredFeatures.push(feature)
+        }
+      } else if (currentView.value === "low") {
+        if (feature.status.baseline === "low") {
+          tempFilteredFeatures.push(feature)
+        }
+      } else if (currentView.value === "high") {
+        if (feature.status.baseline === "high") {
+          tempFilteredFeatures.push(feature)
+        }
+      }
     }
-  }
-})
+
+    counts.value = {
+      all: features.value.length,
+      limited,
+      low,
+      high,
+    }
+
+    if (searchPattern.value !== "") {
+      const fuse = new Fuse(tempFilteredFeatures, fuseOptions)
+      const results = fuse.search(searchPattern.value)
+      tempFilteredFeatures = results.map((x) => x.item)
+    }
+
+    filteredFeatures.value = tempFilteredFeatures.toSorted(
+      currentSortingFunction.value,
+    )
+  },
+  { immediate: true },
+)
 
 // URL synchronization
 
@@ -179,3 +169,9 @@ watch([currentView, searchPattern, sortBy], () => {
   })
 })
 </script>
+
+<style scoped>
+.feature-list {
+  height: max(80dvh, 800px);
+}
+</style>
