@@ -17,6 +17,12 @@ export default defineNuxtConfig({
     defaultLocale: "en",
   },
 
+  robots: {
+    // not sure why but the meta tag was 'noindex, nofollow' with any
+    // combination of configuration i have tried
+    metaTag: false,
+  },
+
   headlessui: {
     prefix: "H",
   },
