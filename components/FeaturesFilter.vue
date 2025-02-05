@@ -65,6 +65,19 @@
       </div>
     </section>
 
+    <section class="ml-auto md:ml-8 flex items-center gap-2">
+      <span class="italic w-16 md:w-auto">Group:</span>
+      <UInputMenu
+        v-model="selectedGroup"
+        value-attribute="key"
+        option-attribute="name"
+        :options="groups"
+        placeholder="Select a group"
+        by="key"
+        :search-attributes="['key', 'name']"
+      />
+    </section>
+
     <section class="ml-auto md:ml-8">
       <UButton variant="outline" @click="onResetFilter">Reset filters</UButton>
     </section>
@@ -78,6 +91,7 @@ defineProps<{
   counts: {
     [view in View]: number
   }
+  groups: Array<{ key: string; name: string }>
   searchPattern: string
 }>()
 
@@ -104,6 +118,10 @@ const sortBy = defineModel<SortingFunctionsName>("sortBy", {
 })
 
 const currentView = defineModel<View>("currentView", {
+  required: true,
+})
+
+const selectedGroup = defineModel<string>("selectedGroup", {
   required: true,
 })
 

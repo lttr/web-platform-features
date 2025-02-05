@@ -1,4 +1,5 @@
 import type { WebFeature } from "~/utils/types"
+import type { EnhancedCompatFeature } from "~/utils/web-features-output"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getValue(path: string, obj: any): unknown {
@@ -67,6 +68,8 @@ export default defineEventHandler(async (event) => {
 
   return {
     features: webFeaturesPackage.features,
+    groups: webFeaturesPackage.groups,
+    snapshots: webFeaturesPackage.snapshots,
     bcd: {
       htmlUrl: browserCompatDataPackage.htmlUrl,
       publishedAt: browserCompatDataPackage.publishedAt,

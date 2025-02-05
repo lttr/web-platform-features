@@ -8,6 +8,8 @@ export type OriginalSnapshot = typeof snapshots
 
 export interface WebFeaturesPackage {
   features: Array<WebFeature>
+  groups: OriginalGroup
+  snapshots: OriginalSnapshot
   bcd: {
     htmlUrl: string
     publishedAt: string

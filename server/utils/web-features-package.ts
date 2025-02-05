@@ -1,7 +1,11 @@
 import type { H3Event } from "h3"
 import type { WebFeature } from "~/utils/types"
 import { WebFeaturesRecordInputSchema } from "~/utils/web-features-input"
-import type { OriginalFeatures } from "~/utils/web-features-output"
+import type {
+  OriginalFeatures,
+  OriginalGroup,
+  OriginalSnapshot,
+} from "~/utils/web-features-output"
 
 // Alternatively: data from a CDN
 // const webFeaturesUrl = "https://cdn.jsdelivr.net/npm/web-features/index.json"
@@ -18,8 +22,8 @@ interface GithubReleaseData {
 
 interface WebFeaturesData {
   features: OriginalFeatures
-  snapshots: Array<unknown>
-  groups: Array<unknown>
+  snapshots: OriginalSnapshot
+  groups: OriginalGroup
 }
 
 export const getWebFeaturesPackageCached = defineCachedFunction(
@@ -62,6 +66,8 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
 
       return {
         features: list,
+        groups: data.groups,
+        snapshots: data.snapshots,
         htmlUrl,
         publishedAt,
         version: tagName,

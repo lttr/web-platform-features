@@ -7,6 +7,8 @@
       v-model:current-view="currentView"
       v-model:sort-by="sortBy"
       v-model:search-pattern="searchPattern"
+      v-model:selected-group="selectedGroup"
+      :groups
       :counts
       @reset-filter="onResetFilter"
     />
@@ -46,6 +48,11 @@ const querySearchPattern = route.query.search as string
 const initialSearchPattern: string = querySearchPattern ?? DEFAULT_SEARCH
 const searchPattern = ref<string>(initialSearchPattern)
 
+const DEFAULT_GROUP = ""
+const queryGroupPattern = route.query.group as string
+const initialGroupPattern: string = queryGroupPattern ?? DEFAULT_SEARCH
+const selectedGroup = ref<string>(initialGroupPattern)
+
 const fuseOptions = {
   keys: [{ name: "name", weight: 5 }, "description", "compat_features"],
   includeScore: true,
@@ -58,15 +65,18 @@ function onResetFilter() {
   currentView.value = DEFAULT_VIEW
   sortBy.value = DEFAULT_SORT_BY
   searchPattern.value = DEFAULT_SEARCH
+  selectedGroup.value = DEFAULT_GROUP
 }
 
 // Data fetching
 
-const { data } = await useFetch<WebFeaturesPackage>("/api/features", {
+const { data } = await useFetch("/api/features", {
   deep: false,
   default: () => {
     return {
       features: [] as WebFeature[],
+      groups: {} as OriginalGroup,
+      snapshots: {} as OriginalSnapshot,
       bcd: {
         htmlUrl: "",
         version: "",
@@ -83,7 +93,14 @@ const { data } = await useFetch<WebFeaturesPackage>("/api/features", {
 
 // Computed data
 
-const features = computed(() => data.value?.features || [])
+const features = computed(() => data.value?.features ?? [])
+const groups = computed(() => {
+  return (Object.entries(data.value?.groups) ?? []).map(([key, value]) => ({
+    key,
+    name: value.name,
+  }))
+})
+// const snapshots = computed(() => Object.entries(data.value?.snapshots) ?? [])
 const currentSortingFunction = computed(() => sortingFunctions[sortBy.value])
 const isSortedByDate = computed(() => sortBy.value.includes("Date"))
 
@@ -96,9 +113,19 @@ const counts = ref({
 
 const filteredFeatures = shallowRef<WebFeature[]>([])
 
+function hasGroup(feature: WebFeature, group: string): boolean {
+  if (Array.isArray(feature.group)) {
+    return feature.group.includes(group)
+  } else if (feature.group) {
+    return feature.group === group
+  }
+  return false
+}
+
 watch(
-  [features, currentSortingFunction, currentView, searchPattern],
+  [features, currentSortingFunction, currentView, searchPattern, selectedGroup],
   () => {
+    console.log("filtering")
     let limited = 0
     let low = 0
     let high = 0
@@ -116,20 +143,18 @@ watch(
         high += 1
       }
 
-      if (currentView.value === "all") {
+      const filterConditions = {
+        all: () => true,
+        limited: () => !feature.status.baseline,
+        low: () => feature.status.baseline === "low",
+        high: () => feature.status.baseline === "high",
+      }
+
+      if (filterConditions[currentView.value]()) {
+        if (selectedGroup.value && !hasGroup(feature, selectedGroup.value)) {
+          continue
+        }
         tempFilteredFeatures.push(feature)
-      } else if (currentView.value === "limited") {
-        if (!feature.status.baseline) {
-          tempFilteredFeatures.push(feature)
-        }
-      } else if (currentView.value === "low") {
-        if (feature.status.baseline === "low") {
-          tempFilteredFeatures.push(feature)
-        }
-      } else if (currentView.value === "high") {
-        if (feature.status.baseline === "high") {
-          tempFilteredFeatures.push(feature)
-        }
       }
     }
 
@@ -155,7 +180,7 @@ watch(
 
 // URL synchronization
 
-watch([currentView, searchPattern, sortBy], () => {
+watch([currentView, searchPattern, sortBy, selectedGroup], () => {
   let search: { search?: string } = {}
   if (searchPattern.value) {
     search = { search: searchPattern.value }
@@ -165,6 +190,7 @@ watch([currentView, searchPattern, sortBy], () => {
       ...search,
       view: currentView.value,
       sort: sortBy.value,
+      group: selectedGroup.value,
     },
   })
 })

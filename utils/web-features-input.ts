@@ -19,15 +19,26 @@ const supportStatusSchema = z.object({
   support: z.record(browserIdentifierSchema, z.string()),
 })
 
+// groups: z.record(
+//   z.string(),
+//   z.object({ name: z.string(), parent: z.string().optional() }),
+// )
+
+// snapshots: z.record(
+//   z.string(),
+//   z.object({ name: z.string(), spec: z.string() }),
+// )
+
 const featureDataSchema = z.object({
-  name: z.string(),
+  alias: z.union([z.string(), z.array(z.string())]).optional(),
+  caniuse: z.union([z.string(), z.array(z.string())]).optional(),
+  compat_features: z.array(z.string()).optional(),
   description: z.string(),
   description_html: z.string(),
-  alias: z.union([z.string(), z.array(z.string())]).optional(),
+  group: z.union([z.string(), z.array(z.string())]).optional(),
+  name: z.string(),
   spec: z.union([z.string(), z.array(z.string())]),
-  caniuse: z.union([z.string(), z.array(z.string())]).optional(),
   status: supportStatusSchema,
-  compat_features: z.array(z.string()).optional(),
   usage_stats: z.union([z.string(), z.array(z.string())]).optional(),
 })
 
