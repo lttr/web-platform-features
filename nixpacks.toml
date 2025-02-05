@@ -5,10 +5,6 @@
 # Optional: Nixpacks can figure it out automatically
 providers = ["node"]
 
-# Optional: already as "engines": { "node" } in package.json
-[variables]
-NIXPACKS_NODE_VERSION = '22'
-
 # Optional: already as start script in package.json
 [start]
 cmd = "node .output/server/index.mjs"
