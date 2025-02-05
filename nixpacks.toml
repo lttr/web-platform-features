@@ -7,13 +7,9 @@ providers = ["node"]
 
 # Optional: already as "engines": { "node" } in package.json
 [variables]
-NIXPACKS_NODE_VERSION = '20'
+NIXPACKS_NODE_VERSION = '22'
 
 # Optional: already as start script in package.json
 [start]
 cmd = "node .output/server/index.mjs"
 
-# Workaround for using correct pnpm version
-# https://github.com/railwayapp/nixpacks/issues/1091
-[phases.install]
-cmds = ["corepack enable", "pnpm install"]
