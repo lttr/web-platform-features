@@ -54,7 +54,11 @@ const initialGroupPattern: string = queryGroupPattern ?? DEFAULT_SEARCH
 const selectedGroup = ref<string>(initialGroupPattern)
 
 const fuseOptions = {
-  keys: [{ name: "name", weight: 5 }, "description", "compat_features"],
+  keys: [
+    { name: "name", weight: 5 },
+    { name: "description", weight: 1 },
+    { name: "compat_features", weight: 1 },
+  ],
   includeScore: true,
   useExtendedSearch: true,
   threshold: 0.4,
@@ -125,7 +129,6 @@ function hasGroup(feature: WebFeature, group: string): boolean {
 watch(
   [features, currentSortingFunction, currentView, searchPattern, selectedGroup],
   () => {
-    console.log("filtering")
     let limited = 0
     let low = 0
     let high = 0
@@ -169,11 +172,12 @@ watch(
       const fuse = new Fuse(tempFilteredFeatures, fuseOptions)
       const results = fuse.search(searchPattern.value)
       tempFilteredFeatures = results.map((x) => x.item)
+      filteredFeatures.value = tempFilteredFeatures
+    } else {
+      filteredFeatures.value = tempFilteredFeatures.toSorted(
+        currentSortingFunction.value,
+      )
     }
-
-    filteredFeatures.value = tempFilteredFeatures.toSorted(
-      currentSortingFunction.value,
-    )
   },
   { immediate: true },
 )
