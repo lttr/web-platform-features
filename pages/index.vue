@@ -108,13 +108,6 @@ const groups = computed(() => {
 const currentSortingFunction = computed(() => sortingFunctions[sortBy.value])
 const isSortedByDate = computed(() => sortBy.value.includes("Date"))
 
-const counts = ref({
-  all: 0,
-  limited: 0,
-  low: 0,
-  high: 0,
-})
-
 const filteredFeatures = shallowRef<WebFeature[]>([])
 
 function hasGroup(feature: WebFeature, group: string): boolean {
@@ -126,26 +119,38 @@ function hasGroup(feature: WebFeature, group: string): boolean {
   return false
 }
 
+// Compute counts separately - only depends on raw features, not filtering/search
+const counts = computed(() => {
+  let limited = 0
+  let low = 0
+  let high = 0
+
+  for (const feature of features.value) {
+    if (!feature.status.baseline) {
+      limited += 1
+    }
+    if (feature.status.baseline === "low") {
+      low += 1
+    }
+    if (feature.status.baseline === "high") {
+      high += 1
+    }
+  }
+
+  return {
+    all: features.value.length,
+    limited,
+    low,
+    high,
+  }
+})
+
 watch(
   [features, currentSortingFunction, currentView, searchPattern, selectedGroup],
   () => {
-    let limited = 0
-    let low = 0
-    let high = 0
-
     let tempFilteredFeatures: WebFeature[] = []
 
     for (const feature of features.value) {
-      if (!feature.status.baseline) {
-        limited += 1
-      }
-      if (feature.status.baseline === "low") {
-        low += 1
-      }
-      if (feature.status.baseline === "high") {
-        high += 1
-      }
-
       const filterConditions = {
         all: () => true,
         limited: () => !feature.status.baseline,
@@ -159,13 +164,6 @@ watch(
         }
         tempFilteredFeatures.push(feature)
       }
-    }
-
-    counts.value = {
-      all: features.value.length,
-      limited,
-      low,
-      high,
     }
 
     if (searchPattern.value !== "") {
