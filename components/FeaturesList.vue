@@ -1,9 +1,13 @@
 <template>
-  <div v-bind="containerProps">
-    <div v-bind="wrapperProps">
-      <ul v-auto-animate class="flex flex-col gap-2">
+  <div>
+    <div :style="{ height: `${totalHeight}px` }">
+      <ul
+        v-auto-animate
+        class="flex flex-col gap-2"
+        :style="{ transform: `translateY(${visibleStartY}px)` }"
+      >
         <li
-          v-for="{ data: feature } of list"
+          v-for="feature of visibleFeatures"
           :key="feature.id"
           class="max-w-[86ch]"
         >
@@ -29,12 +33,30 @@ const props = defineProps<{
   displayYears: boolean
 }>()
 
-const inputList = computed(() => props.features)
+const ITEM_HEIGHT = 65
+const OVERSCAN = 20
 
-const { list, containerProps, wrapperProps } = useVirtualList(inputList, {
-  itemHeight: 65,
-  overscan: 20,
-})
+const { y: scrollY } = useWindowScroll()
+const { height: windowHeight } = useWindowSize()
+
+const totalHeight = computed(() => props.features.length * ITEM_HEIGHT)
+
+const visibleStartIndex = computed(() =>
+  Math.max(0, Math.floor(scrollY.value / ITEM_HEIGHT) - OVERSCAN),
+)
+
+const visibleEndIndex = computed(() =>
+  Math.min(
+    props.features.length - 1,
+    Math.floor((scrollY.value + windowHeight.value) / ITEM_HEIGHT) + OVERSCAN,
+  ),
+)
+
+const visibleFeatures = computed(() =>
+  props.features.slice(visibleStartIndex.value, visibleEndIndex.value + 1),
+)
+
+const visibleStartY = computed(() => visibleStartIndex.value * ITEM_HEIGHT)
 
 let lastYearSeen = -1
 
