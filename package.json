@@ -19,7 +19,6 @@
   },
   "packageManager": "pnpm@10.2.0",
   "dependencies": {
-    "@formkit/auto-animate": "^0.8.2",
     "@nuxt/ui": "^2.18.4",
     "@nuxtjs/plausible": "^1.0.2",
     "@nuxtjs/seo": "2.0.0-rc.18",
