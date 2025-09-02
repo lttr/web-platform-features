@@ -2,14 +2,13 @@
   <div>
     <div :style="{ height: `${totalHeight}px` }">
       <ul
-        v-auto-animate
         class="flex flex-col gap-2"
         :style="{ transform: `translateY(${visibleStartY}px)` }"
       >
         <li
           v-for="feature of visibleFeatures"
           :key="feature.id"
-          class="max-w-[86ch]"
+          class="max-w-[86ch] [content-visibility:auto] [contain-intrinsic-size:auto_65px]"
         >
           <div
             v-if="displayYears && isDifferentYear(feature)"
@@ -26,8 +25,6 @@
 </template>
 
 <script lang="ts" setup>
-import { vAutoAnimate } from "@formkit/auto-animate"
-
 const props = defineProps<{
   features: WebFeature[]
   displayYears: boolean
