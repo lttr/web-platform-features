@@ -112,36 +112,19 @@
       </div>
 
       <div>
-        <h3 class="text-sm font-semibold mb-1">Browser compat data names</h3>
-        <ul>
-          <li
-            v-for="compatFeature of feature.compatFeaturesEnhanced"
-            :key="compatFeature.name"
-            class="list-disc ms-6"
+        <h3 class="text-sm font-semibold mb-1">
+          <button
+            class="cursor-pointer hover:opacity-70 underline underline-offset-2"
+            @click="compatModalOpen = true"
           >
-            <div class="flex gap-2">
-              <span class="truncate">{{ compatFeature.name }}</span>
+            Browser compat data names
+          </button>
+        </h3>
 
-              <span v-if="compatFeature.mdnUrl" class="min-w-fit">
-                <NuxtLink
-                  class="underline underline-offset-2"
-                  :to="compatFeature.mdnUrl"
-                >
-                  MDN
-                </NuxtLink>
-              </span>
-
-              <span class="min-w-fit">
-                <NuxtLink
-                  class="underline underline-offset-2"
-                  :to="`https://caniuse.com/?search=${compatFeature.name}`"
-                >
-                  Can I Use
-                </NuxtLink>
-              </span>
-            </div>
-          </li>
-        </ul>
+        <CompatModal
+          v-model="compatModalOpen"
+          :compat-features-enhanced="feature.compatFeaturesEnhanced"
+        />
       </div>
 
       <DevOnly>
@@ -168,6 +151,7 @@ const { feature } = defineProps<{
 }>()
 
 const open = ref(false)
+const compatModalOpen = ref(false)
 
 const specs = computed(() =>
   Array.isArray(feature.spec) ? feature.spec : [feature.spec],
