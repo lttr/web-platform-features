@@ -14,6 +14,9 @@
     "preview": "nuxt preview",
     "typecheck": "nuxi typecheck"
   },
+  "engines": {
+    "node": "24.x"
+  },
   "packageManager": "pnpm@10.17.1",
   "dependencies": {
     "@nuxt/ui": "^2.18.4",
