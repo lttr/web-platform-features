@@ -60,7 +60,7 @@
         @input="onSearchChange"
       />
       <div class="hidden md:flex items-center gap-0.5 text-gray-300">
-        <UKbd>{{ metaSymbol }}</UKbd>
+        <UKbd value="meta" />
         <UKbd>K</UKbd>
       </div>
     </section>
@@ -155,8 +155,6 @@ const sortingOptions = [
     label: "source order",
   },
 ]
-
-const { metaSymbol } = useShortcuts()
 
 const search = ref<{ input: HTMLInputElement } | null>(null)
 

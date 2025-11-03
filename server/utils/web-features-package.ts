@@ -50,9 +50,9 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
       const list: WebFeature[] = Object.entries(parsedData).map(
         ([key, feature]) => {
           return {
+            ...feature,
             id: key,
             compatFeaturesEnhanced: [],
-            ...feature,
           }
         },
       )

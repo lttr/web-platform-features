@@ -185,7 +185,8 @@ const supported = (browser: BrowserGroup) => {
 const engineTitle = (browsers: BrowserGroup[]) =>
   browsers
     .map((browser, index, array) => {
-      const previous = index > 0 ? supported(array[index - 1]) : undefined
+      const previousBrowser = index > 0 ? array[index - 1] : undefined
+      const previous = previousBrowser ? supported(previousBrowser) : undefined
       const current = supported(browser)
       const name = browser.name
       return typeof previous === "undefined"

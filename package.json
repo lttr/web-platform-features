@@ -8,7 +8,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "format": "prettier --write .",
+    "format": "prettier --list-different --write .",
     "generate": "nuxt generate",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
@@ -32,13 +32,13 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@lttr/nuxt-config-eslint": "^0.3.0",
+    "@lttr/nuxt-config-eslint": "^0.4.0",
     "@nuxt/eslint": "^1.10.0",
     "@total-typescript/ts-reset": "^0.6.1",
     "@vueuse/core": "^14.0.0",
     "@vueuse/nuxt": "^14.0.0",
     "@vueuse/router": "^14.0.0",
-    "eslint": "^9.39.0",
+    "eslint": "^9.36.0",
     "nuxt-headlessui": "^1.2.1",
     "prettier": "^3.6.2",
     "typescript": "^5.9.3"

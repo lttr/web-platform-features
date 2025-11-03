@@ -43,7 +43,10 @@ const featureDataSchema = z.object({
 })
 
 export const WebFeatureInputSchema = featureDataSchema
-export const WebFeaturesRecordInputSchema = z.record(featureDataSchema)
+export const WebFeaturesRecordInputSchema = z.record(
+  z.string(),
+  featureDataSchema,
+)
 
 export type WebFeatureInput = z.infer<typeof WebFeatureInputSchema>
 
