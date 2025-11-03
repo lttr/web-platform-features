@@ -23,7 +23,7 @@
     "@nuxtjs/plausible": "^1.0.2",
     "@nuxtjs/seo": "2.0.0-rc.18",
     "fuse.js": "^7.0.0",
-    "nuxt": "^3.13.1",
+    "nuxt": "^4.2.0",
     "vue": "^3.5.1",
     "vue-router": "^4.4.3",
     "web-features": "^1.2.0",
