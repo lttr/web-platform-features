@@ -19,26 +19,26 @@
   },
   "packageManager": "pnpm@10.17.1",
   "dependencies": {
-    "@nuxt/ui": "^2.18.4",
-    "@nuxtjs/plausible": "^1.0.2",
-    "@nuxtjs/seo": "2.0.0-rc.18",
-    "fuse.js": "^7.0.0",
+    "@nuxt/ui": "^4.1.0",
+    "@nuxtjs/plausible": "^2.0.1",
+    "@nuxtjs/seo": "3.2.2",
+    "fuse.js": "^7.1.0",
     "nuxt": "^4.2.0",
-    "vue": "^3.5.1",
-    "vue-router": "^4.4.3",
-    "web-features": "^1.2.0",
-    "zod": "^3.23.8"
+    "vue": "^3.5.22",
+    "vue-router": "^4.6.3",
+    "web-features": "^3.6.0",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@lttr/nuxt-config-eslint": "^0.3.0",
-    "@nuxt/eslint": "^0.5.5",
+    "@nuxt/eslint": "^1.10.0",
     "@total-typescript/ts-reset": "^0.6.1",
-    "@vueuse/core": "^11.0.3",
-    "@vueuse/nuxt": "^11.0.3",
-    "@vueuse/router": "^11.0.3",
-    "eslint": "^9.9.1",
-    "nuxt-headlessui": "^1.2.0",
-    "prettier": "^3.3.3",
-    "typescript": "^5.5.4"
+    "@vueuse/core": "^14.0.0",
+    "@vueuse/nuxt": "^14.0.0",
+    "@vueuse/router": "^14.0.0",
+    "eslint": "^9.39.0",
+    "nuxt-headlessui": "^1.2.1",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3"
   }
 }
