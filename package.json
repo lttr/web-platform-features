@@ -14,10 +14,7 @@
     "preview": "nuxt preview",
     "typecheck": "nuxi typecheck"
   },
-  "engines": {
-    "node": "22"
-  },
-  "packageManager": "pnpm@10.2.0",
+  "packageManager": "pnpm@10.17.1",
   "dependencies": {
     "@nuxt/ui": "^2.18.4",
     "@nuxtjs/plausible": "^1.0.2",
