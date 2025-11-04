@@ -8,13 +8,14 @@
     }"
     @toggle="open = !open"
   >
-    <summary
-      class="flex justify-between items-start sm:items-center cursor-pointer gap-3"
-    >
-      <div class="flex gap-3 items-center min-w-0 flex-shrink">
+    <summary class="flex justify-between items-center cursor-pointer gap-3">
+      <div class="flex flex-col gap-1 min-w-0 flex-shrink">
         <h2 class="font-semibold text-base leading-tight break-words">
           {{ feature.name }}
         </h2>
+        <span class="text-xs text-gray-500 dark:text-gray-400 truncate h-4">
+          {{ groupNames || "\u00A0" }}
+        </span>
       </div>
 
       <div class="flex flex-wrap gap-2 items-center flex-shrink-0">
@@ -157,6 +158,14 @@ const compatModalOpen = ref(false)
 const specs = computed(() =>
   Array.isArray(feature.spec) ? feature.spec : [feature.spec],
 )
+
+const groupNames = computed(() => {
+  if (!feature.group) return null
+  if (Array.isArray(feature.group)) {
+    return feature.group.join(", ")
+  }
+  return feature.group
+})
 
 const lowDateShort = computed(() => {
   if (feature.status.baseline_low_date) {
