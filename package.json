@@ -24,6 +24,7 @@
     "@nuxt/ui": "^4.1.0",
     "@nuxtjs/plausible": "^2.0.1",
     "@nuxtjs/seo": "3.2.2",
+    "@oxc-minify/binding-linux-x64-gnu": "0.95.0",
     "@oxc-parser/binding-linux-x64-gnu": "0.95.0",
     "@oxc-transform/binding-linux-x64-gnu": "0.95.0",
     "fuse.js": "^7.1.0",
