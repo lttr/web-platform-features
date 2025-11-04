@@ -45,6 +45,9 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
     devDependencies:
+      '@iconify-json/lucide':
+        specifier: ^1.2.72
+        version: 1.2.72
       '@lttr/nuxt-config-eslint':
         specifier: ^0.4.0
         version: 0.4.0(jiti@2.6.1)(vue-eslint-parser@10.2.0(eslint@9.39.1(jiti@2.6.1)))
@@ -527,6 +530,9 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
 
+  '@iconify-json/lucide@1.2.72':
+    resolution: {integrity: sha512-kq/ZDUtCdBfjGxIMaUI+Ctt3dC/0sHmrUyTU1i04+8ehlo3/PUGKqrJd4C9J/kQl1jfcHpaUPqGUFvgZ9orhQg==}
+
   '@iconify/collections@1.0.614':
     resolution: {integrity: sha512-j+5AM/tcMXicNktY1N6ZfnRH8WrK4NurONe2LejP2eQi6aN7R+IH7tDax+7CJAIf+G25pRxlFOTDv4+X7FmerA==}
 
@@ -834,7 +840,6 @@ packages:
   '@oxc-minify/binding-linux-x64-gnu@0.95.0':
     resolution: {integrity: sha512-3K2lxzk679ml1vXJtO8Nt3xMD2trnDQWBb4Q676Un5g3dbaYf1WgTmEI13ZnCrwE5uBI02DFtFQplkLFqb9dGA==}
     engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [x64]
     os: [linux]
 
   '@oxc-minify/binding-linux-x64-musl@0.95.0':
@@ -5516,6 +5521,10 @@ snapshots:
   '@humanwhocodes/module-importer@1.0.1': {}
 
   '@humanwhocodes/retry@0.4.3': {}
+
+  '@iconify-json/lucide@1.2.72':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/collections@1.0.614':
     dependencies:

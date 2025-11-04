@@ -1,6 +1,9 @@
 import type { H3Event } from "h3"
 import type { WebFeature } from "~/utils/types"
-import { WebFeaturesRecordInputSchema } from "~/utils/web-features-input"
+import {
+  WebFeatureInputSchema,
+  WebFeaturesRecordInputSchema,
+} from "~/utils/web-features-input"
 import type {
   OriginalFeatures,
   OriginalGroup,
@@ -46,8 +49,25 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
       // and ofetch does not handle it at I need
       const response = await fetch(featuresDataUrl)
       const data = (await response.json()) as WebFeaturesData
-      const parsedData = WebFeaturesRecordInputSchema.parse(data.features)
-      const list: WebFeature[] = Object.entries(parsedData).map(
+
+      // Filter out invalid features individually
+      const validFeatures: Record<string, (typeof data.features)[string]> = {}
+      const invalidFeatures: string[] = []
+
+      for (const [key, feature] of Object.entries(data.features)) {
+        const validation = WebFeatureInputSchema.safeParse(feature)
+        if (validation.success) {
+          validFeatures[key] = feature
+        } else {
+          invalidFeatures.push(key)
+        }
+      }
+
+      if (invalidFeatures.length > 0) {
+        console.error("Invalid features found:", invalidFeatures)
+      }
+
+      const list: WebFeature[] = Object.entries(validFeatures).map(
         ([key, feature]) => {
           return {
             ...feature,
