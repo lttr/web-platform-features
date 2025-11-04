@@ -10,6 +10,8 @@ export default defineNuxtConfig({
     "@nuxtjs/seo",
   ],
 
+  css: ["~/assets/css/main.css"],
+
   site: {
     url: "https://web-features.lttr.cz",
     name: "Web features",
