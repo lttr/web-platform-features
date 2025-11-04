@@ -69,12 +69,10 @@
       <span class="italic w-16 md:w-auto">Group:</span>
       <UInputMenu
         v-model="selectedGroup"
-        value-attribute="key"
-        option-attribute="name"
-        :options="groups"
+        :items="groups"
+        value-key="value"
         placeholder="Select a group"
-        by="key"
-        :search-attributes="['key', 'name']"
+        searchable
       />
     </section>
 
@@ -91,7 +89,7 @@ defineProps<{
   counts: {
     [view in View]: number
   }
-  groups: Array<{ key: string; name: string }>
+  groups: Array<{ value: string; label: string }>
   searchPattern: string
 }>()
 
