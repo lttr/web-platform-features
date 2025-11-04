@@ -35,6 +35,10 @@ importers:
       zod:
         specifier: ^4.1.12
         version: 4.1.12
+    optionalDependencies:
+      '@oxc-parser/binding-linux-x64-gnu':
+        specifier: 0.95.0
+        version: 0.95.0
     devDependencies:
       '@lttr/nuxt-config-eslint':
         specifier: ^0.4.0

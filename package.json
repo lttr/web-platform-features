@@ -42,5 +42,8 @@
     "nuxt-headlessui": "^1.2.1",
     "prettier": "^3.6.2",
     "typescript": "^5.9.3"
+  },
+  "optionalDependencies": {
+    "@oxc-parser/binding-linux-x64-gnu": "0.95.0"
   }
 }
