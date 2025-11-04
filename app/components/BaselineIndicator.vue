@@ -9,13 +9,15 @@
     @toggle="open = !open"
   >
     <summary
-      class="flex justify-between flex-wrap items-center cursor-pointer gap-2"
+      class="flex justify-between items-start sm:items-center cursor-pointer gap-3"
     >
-      <div class="flex gap-3 items-center">
-        <h2 class="font-semibold max-w-[30ch] truncate">{{ feature.name }}</h2>
+      <div class="flex gap-3 items-center min-w-0 flex-shrink">
+        <h2 class="font-semibold text-base leading-tight break-words">
+          {{ feature.name }}
+        </h2>
       </div>
 
-      <div class="flex flex-wrap gap-2 items-center">
+      <div class="flex flex-wrap gap-2 items-center flex-shrink-0">
         <div>
           <span v-if="!feature.status.baseline" class="flex items-center gap-2">
             <span
@@ -70,7 +72,7 @@
       </div>
     </summary>
 
-    <div v-if="open" class="py-4 flex flex-col gap-4">
+    <div v-if="open" class="pt-4 pb-2 flex flex-col gap-6">
       <div>
         <h3 class="text-sm font-semibold mb-1">Description</h3>
         <!-- eslint-disable-next-line vue/no-v-html -->
@@ -105,7 +107,7 @@
         <ul>
           <li v-for="spec of specs" :key="spec" class="list-disc ms-6">
             <NuxtLink class="underline underline-offset-2" :to="spec">{{
-              feature.spec
+              spec
             }}</NuxtLink>
           </li>
         </ul>
