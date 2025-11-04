@@ -19,7 +19,7 @@
     "typecheck": "nuxi typecheck",
     "verify": "npm run format && npm run lint:fix && npm run typecheck && npm test"
   },
-  "packageManager": "pnpm@10.17.1",
+  "packageManager": "pnpm@9.15.9",
   "dependencies": {
     "@nuxt/ui": "^4.1.0",
     "@nuxtjs/plausible": "^2.0.1",
