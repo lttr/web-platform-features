@@ -16,7 +16,8 @@ const supportStatusSchema = z.object({
   baseline: z.union([baselineHighLowSchema, z.literal(false)]),
   baseline_low_date: z.string().optional(),
   baseline_high_date: z.string().optional(),
-  support: z.record(browserIdentifierSchema, z.string()),
+  // Only browsers that support the feature are included in the object
+  support: z.record(z.string(), z.string()),
 })
 
 // groups: z.record(
