@@ -10,7 +10,7 @@ providers = ["node"]
 # NIXPACKS_NODE_VERSION = '24'
 
 # Custom install phase to ensure corepack is available
-# The oxc-parser optional dependency is declared explicitly in package.json
+# oxc-parser binding is declared as regular dependency to ensure it's installed
 [phases.install]
 cmds = [
   "npm install -g corepack@0.24.1 && corepack enable",
