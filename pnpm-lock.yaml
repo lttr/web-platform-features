@@ -20,6 +20,9 @@ importers:
       '@oxc-parser/binding-linux-x64-gnu':
         specifier: 0.95.0
         version: 0.95.0
+      '@oxc-transform/binding-linux-x64-gnu':
+        specifier: 0.95.0
+        version: 0.95.0
       fuse.js:
         specifier: ^7.1.0
         version: 7.1.0
@@ -6451,8 +6454,7 @@ snapshots:
   '@oxc-transform/binding-linux-s390x-gnu@0.95.0':
     optional: true
 
-  '@oxc-transform/binding-linux-x64-gnu@0.95.0':
-    optional: true
+  '@oxc-transform/binding-linux-x64-gnu@0.95.0': {}
 
   '@oxc-transform/binding-linux-x64-musl@0.95.0':
     optional: true
