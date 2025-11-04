@@ -1,7 +1,6 @@
 <template>
   <UModal v-model:open="open" title="Browser compat data names">
-    <div class="px-7 py-6 bg-white dark:bg-slate-800">
-      <p class="text-lg font-bold mb-4">Browser compat data names</p>
+    <template #body>
       <ul class="max-h-96 overflow-y-auto">
         <li
           v-for="compatFeature of compatFeaturesEnhanced"
@@ -33,7 +32,7 @@
           </div>
         </li>
       </ul>
-    </div>
+    </template>
   </UModal>
 </template>
 

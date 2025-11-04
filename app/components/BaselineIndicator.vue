@@ -114,14 +114,13 @@
       </div>
 
       <div>
-        <h3 class="text-sm font-semibold mb-1">
-          <button
-            class="cursor-pointer hover:opacity-70 underline underline-offset-2"
-            @click="compatModalOpen = true"
-          >
-            Browser compat data names
-          </button>
-        </h3>
+        <h3 class="text-sm font-semibold mb-1">Browser compat data names</h3>
+        <button
+          class="text-sm cursor-pointer hover:opacity-70"
+          @click="compatModalOpen = true"
+        >
+          View list
+        </button>
 
         <CompatModal
           v-model="compatModalOpen"
@@ -130,12 +129,12 @@
       </div>
 
       <DevOnly>
-        <details class="flex gap-2 border-slate-500 border-t pt-3">
+        <details class="border-slate-500 border-t pt-3">
           <summary class="w-100 cursor-pointer">
             <h3 class="inline text-sm font-semibold mb-1">Original data</h3>
           </summary>
-          <div>
-            <pre class="whitespace-pre-wrap overflow-scroll">{{
+          <div class="mt-2">
+            <pre class="whitespace-pre-wrap overflow-auto max-h-96">{{
               JSON.stringify(feature, null, 2)
             }}</pre>
           </div>
