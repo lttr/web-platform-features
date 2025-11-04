@@ -9,6 +9,19 @@ providers = ["node"]
 # [variables]
 # NIXPACKS_NODE_VERSION = '24'
 
+# Custom install phase to handle oxc-parser optional native dependencies
+# Issue: postinstall (nuxt prepare) fails when optional bindings aren't ready
+# Solution: Install deps without scripts, rebuild natives, then run postinstall
+# Ref: https://pnpm.io/cli/install#--ignore-scripts
+# Ref: https://pnpm.io/cli/rebuild
+[phases.install]
+cmds = [
+  "npm install -g corepack@0.24.1 && corepack enable",
+  "pnpm install --frozen-lockfile --ignore-scripts",
+  "pnpm rebuild",
+  "pnpm run postinstall"
+]
+
 # Optional: already as start script in package.json
 [start]
 cmd = "node .output/server/index.mjs"
