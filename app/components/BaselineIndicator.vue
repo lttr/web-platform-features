@@ -8,7 +8,9 @@
     }"
     @toggle="open = !open"
   >
-    <summary class="flex justify-between items-center cursor-pointer gap-3">
+    <summary
+      class="flex flex-wrap justify-between items-center cursor-pointer gap-3"
+    >
       <div class="flex flex-col gap-1 min-w-0 flex-shrink">
         <h2 class="font-semibold text-base leading-tight break-words">
           {{ feature.name }}
