@@ -21,6 +21,13 @@
       </div>
 
       <div class="flex flex-wrap gap-2 items-center flex-shrink-0">
+        <span
+          v-if="feature.isInterop2025"
+          class="text-xs px-2 py-1 rounded bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 font-medium"
+          title="Part of Interop 2025 - browsers working together to support this feature"
+        >
+          Interop 2025
+        </span>
         <div>
           <span v-if="!feature.status.baseline" class="flex items-center gap-2">
             <span

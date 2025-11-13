@@ -1,5 +1,6 @@
 import type { WebFeature } from "~/utils/types"
 import type { EnhancedCompatFeature } from "~/utils/web-features-output"
+import { getInterop2025FeatureIds } from "../utils/interop-2025-mapping"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getValue(path: string, obj: any): unknown {
@@ -41,6 +42,8 @@ export default defineEventHandler(async (event) => {
 
   const startTimeTransform = performance.now()
 
+  const interop2025Ids = getInterop2025FeatureIds()
+
   for (const feature of webFeaturesPackage.features as WebFeature[]) {
     feature.status.baseline_low_date = sanitizeDate(
       feature.status.baseline_low_date,
@@ -48,6 +51,9 @@ export default defineEventHandler(async (event) => {
     feature.status.baseline_high_date = sanitizeDate(
       feature.status.baseline_high_date,
     )
+
+    // Mark if feature is part of Interop 2025
+    feature.isInterop2025 = interop2025Ids.has(feature.id)
 
     if (feature.compat_features) {
       const enhancedCompatFeatures: EnhancedCompatFeature[] = []
