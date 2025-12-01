@@ -9,51 +9,70 @@
     @toggle="open = !open"
   >
     <summary
-      class="flex flex-wrap justify-between items-center cursor-pointer gap-3"
+      class="flex flex-col md:flex-row md:justify-between md:items-center cursor-pointer gap-2 md:gap-3"
     >
-      <div class="flex flex-col gap-1 min-w-0 flex-shrink">
-        <h2 class="font-semibold text-base leading-tight break-words">
-          {{ feature.name }}
-        </h2>
-        <span class="text-xs text-gray-500 dark:text-gray-400 truncate h-4">
-          {{ groupNames || "\u00A0" }}
+      <!-- Row 1: Title + Interop badge (mobile) / Title block (desktop) -->
+      <div
+        class="flex justify-between items-start gap-2 min-w-0 md:flex-shrink"
+      >
+        <div class="flex flex-col gap-1 min-w-0">
+          <h2 class="font-semibold text-base leading-tight md:truncate">
+            {{ feature.name }}
+          </h2>
+          <span class="text-xs text-gray-500 dark:text-gray-400 truncate h-4">
+            {{ groupNames || "\u00A0" }}
+          </span>
+        </div>
+        <!-- Interop badge: top-right on mobile, inline on desktop -->
+        <span
+          v-if="feature.isInterop2025"
+          class="md:hidden text-xs px-2 py-1 rounded bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 font-medium whitespace-nowrap"
+          title="Part of Interop 2025 - browsers working together to support this feature"
+        >
+          Interop 2025
         </span>
       </div>
 
-      <div class="flex flex-wrap gap-2 items-center flex-shrink-0">
+      <!-- Row 2: Support info + browsers + date -->
+      <div class="flex flex-nowrap gap-2 items-center md:flex-shrink-0">
+        <!-- Interop badge: hidden on mobile, shown on desktop -->
         <span
           v-if="feature.isInterop2025"
-          class="text-xs px-2 py-1 rounded bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 font-medium"
+          class="hidden md:inline-block text-xs px-2 py-1 rounded bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 font-medium"
           title="Part of Interop 2025 - browsers working together to support this feature"
         >
           Interop 2025
         </span>
         <div>
-          <span v-if="!feature.status.baseline" class="flex items-center gap-2">
+          <span v-if="!feature.status.baseline" class="flex items-center gap-1">
             <span
               class="w-5 h-5 bg-[url(~/assets/baseline/limited.svg)] dark:bg-[url(~/assets/baseline/limited-dark.svg)] bg-no-repeat bg-center"
             ></span>
-            <span class="italic text-sm">Limited</span>
+            <span class="hidden md:inline italic text-sm">Limited</span>
           </span>
 
           <span
             v-if="feature.status.baseline === 'low'"
-            class="flex items-center gap-2"
+            class="flex items-center gap-1"
           >
             <span
               class="w-5 h-5 bg-[url(~/assets/baseline/low.svg)] dark:bg-[url(~/assets/baseline/low-dark.svg)] bg-no-repeat bg-center"
             ></span>
-            <span class="italic text-sm">Newly available</span>
+            <span class="hidden md:inline italic text-sm whitespace-nowrap"
+              >Newly available</span
+            >
           </span>
 
           <span
             v-if="feature.status.baseline === 'high'"
-            class="flex items-center gap-2"
+            class="flex items-center gap-1"
           >
             <span
               class="w-5 h-5 bg-[url(~/assets/baseline/high.svg)] dark:bg-[url(~/assets/baseline/high-dark.svg)] bg-no-repeat bg-center"
             ></span>
-            <span class="italic text-sm">Widely available</span>
+            <span class="hidden md:inline italic text-sm whitespace-nowrap"
+              >Widely available</span
+            >
           </span>
         </div>
         <div class="flex">
@@ -74,11 +93,17 @@
           </span>
         </div>
 
-        <span :title="`Supported since ${lowDateFull}`" class="min-w-[7ch]">
+        <span
+          :title="`Supported since ${lowDateFull}`"
+          class="hidden md:inline min-w-[7ch]"
+        >
           {{ lowDateShort }}
         </span>
 
-        <UIcon class="chevron ml-auto" name="i-heroicons-chevron-down" />
+        <UIcon
+          class="chevron ml-auto md:ml-0"
+          name="i-heroicons-chevron-down"
+        />
       </div>
     </summary>
 
@@ -169,7 +194,9 @@ const specs = computed(() =>
 )
 
 const groupNames = computed(() => {
-  if (!feature.group) return null
+  if (!feature.group) {
+    return null
+  }
   if (Array.isArray(feature.group)) {
     return feature.group.join(", ")
   }
@@ -285,9 +312,14 @@ const engineTitle = (browsers: BrowserGroup[]) =>
   background: var(--baseline-engine-bg);
   border-radius: 2rem;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0.5rem 0.625rem;
+  flex-wrap: nowrap;
+  gap: 0.25rem;
+  padding: 0.375rem 0.5rem;
+
+  @media (min-width: 768px) {
+    gap: 0.5rem;
+    padding: 0.5rem 0.625rem;
+  }
 
   .browser {
     display: flex;
@@ -297,8 +329,13 @@ const engineTitle = (browsers: BrowserGroup[]) =>
       background-size: contain;
       content: "";
       display: block;
-      height: 1.25rem;
-      width: 1.25rem;
+      height: 1rem;
+      width: 1rem;
+
+      @media (min-width: 768px) {
+        height: 1.25rem;
+        width: 1.25rem;
+      }
     }
 
     &.chrome::before {
@@ -318,11 +355,16 @@ const engineTitle = (browsers: BrowserGroup[]) =>
       background-color: var(--baseline-cross);
       content: "";
       display: block;
-      height: 1.25rem;
+      height: 1rem;
       mask-image: url("~/assets/baseline/browser-cross.svg");
       mask-repeat: no-repeat;
       mask-size: contain;
-      width: 1rem;
+      width: 0.75rem;
+
+      @media (min-width: 768px) {
+        height: 1.25rem;
+        width: 1rem;
+      }
     }
 
     &.supported::after {

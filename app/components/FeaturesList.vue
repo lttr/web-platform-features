@@ -5,7 +5,7 @@
         <li
           v-for="feature of displayedFeatures"
           :key="feature.id"
-          class="max-w-[86ch] [content-visibility:auto] [contain-intrinsic-size:auto_65px]"
+          class="max-w-[100ch] [content-visibility:auto] [contain-intrinsic-size:auto_65px]"
         >
           <div
             v-if="displayYears && isDifferentYear(feature)"
@@ -42,12 +42,16 @@ const { height: windowHeight } = useWindowSize()
 const totalHeight = computed(() => props.features.length * ITEM_HEIGHT)
 
 const visibleStartIndex = computed(() => {
-  if (!isClient.value) return 0
+  if (!isClient.value) {
+    return 0
+  }
   return Math.max(0, Math.floor(scrollY.value / ITEM_HEIGHT) - OVERSCAN)
 })
 
 const visibleEndIndex = computed(() => {
-  if (!isClient.value) return props.features.length - 1
+  if (!isClient.value) {
+    return props.features.length - 1
+  }
   return Math.min(
     props.features.length - 1,
     Math.floor((scrollY.value + windowHeight.value) / ITEM_HEIGHT) + OVERSCAN,

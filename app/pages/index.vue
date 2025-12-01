@@ -102,7 +102,9 @@ const groups = computed(() => {
   // Force reactivity by accessing data.value first
   const currentData = data.value
   const groupsData = currentData?.groups
-  if (!groupsData) return []
+  if (!groupsData) {
+    return []
+  }
 
   return Object.entries(groupsData).map(([key, value]) => ({
     value: key,
