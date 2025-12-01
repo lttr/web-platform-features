@@ -40,12 +40,7 @@
     <section class="flex items-center gap-3">
       <span class="italic w-16 md:w-auto">Sorting:</span>
       <div class="min-w-64">
-        <USelectMenu
-          v-model="sortBy"
-          :options="sortingOptions"
-          value-attribute="value"
-          option-attribute="label"
-        />
+        <USelect v-model="sortBy" :items="sortingOptions" value-key="value" />
       </div>
     </section>
 
