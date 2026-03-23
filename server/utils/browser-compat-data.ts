@@ -10,6 +10,34 @@ interface GithubReleaseData {
   tag_name: string
 }
 
+/**
+ * Walk the BCD tree and extract a flat map of dot-path -> mdn_url.
+ * This avoids caching the entire ~80MB+ BCD object in memory.
+ */
+function extractMdnUrls(
+  obj: Record<string, unknown>,
+  prefix = "",
+  result: Record<string, string> = {},
+): Record<string, string> {
+  for (const [key, value] of Object.entries(obj)) {
+    if (key === "__compat" || !value || typeof value !== "object") {
+      continue
+    }
+
+    const path = prefix ? `${prefix}.${key}` : key
+    const node = value as Record<string, unknown>
+    const compat = node.__compat as { mdn_url?: string } | undefined
+
+    if (compat?.mdn_url) {
+      result[path] = compat.mdn_url
+    }
+
+    extractMdnUrls(node, path, result)
+  }
+
+  return result
+}
+
 export const getBrowserCompatDataCached = defineCachedFunction(
   async (_event: H3Event) => {
     const startTime = performance.now()
@@ -25,10 +53,12 @@ export const getBrowserCompatDataCached = defineCachedFunction(
     )?.browser_download_url
 
     if (featuresDataUrl) {
-      // The URL is ment to be used for data downloading inside browser
-      // and ofetch does not handle it at I need
       const response = await fetch(featuresDataUrl)
-      const data = await response.json()
+      const fullBcd = await response.json()
+
+      // Extract only MDN URLs (small map) from the massive BCD object,
+      // then let the full object be garbage collected
+      const mdnUrls = extractMdnUrls(fullBcd as Record<string, unknown>)
 
       const endTime = performance.now()
       console.log(
@@ -38,7 +68,7 @@ export const getBrowserCompatDataCached = defineCachedFunction(
       )
 
       return {
-        bcd: data,
+        mdnUrls,
         htmlUrl,
         publishedAt,
         version: tagName,

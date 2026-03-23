@@ -2,23 +2,6 @@ import type { WebFeature } from "~/utils/types"
 import type { EnhancedCompatFeature } from "~/utils/web-features-output"
 import { getInterop2025FeatureIds } from "../utils/interop-2025-mapping"
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getValue(path: string, obj: any): unknown {
-  let result = obj
-  for (const property of path.split(".")) {
-    result = result && result[property]
-  }
-  return result
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function getMdnUrl(name: string, bcd: any): string | undefined {
-  const nestedObject = getValue(name, bcd) as {
-    __compat: { mdn_url: string }
-  }
-  return nestedObject?.__compat?.mdn_url
-}
-
 // Sanitize date because of
 // https://github.com/web-platform-dx/web-features/pull/1398
 function sanitizeDate(date: string | undefined): string | undefined {
@@ -58,7 +41,7 @@ export default defineEventHandler(async (event) => {
     if (feature.compat_features) {
       const enhancedCompatFeatures: EnhancedCompatFeature[] = []
       for (const name of feature.compat_features) {
-        const mdnUrl = getMdnUrl(name, browserCompatDataPackage.bcd)
+        const mdnUrl = browserCompatDataPackage.mdnUrls[name]
         enhancedCompatFeatures.push({ name, mdnUrl })
       }
       feature.compatFeaturesEnhanced = enhancedCompatFeatures
