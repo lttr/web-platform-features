@@ -1,4 +1,5 @@
 import type { features, groups, snapshots } from "web-features"
+import type { WebFeature } from "~/utils/types"
 
 export type OriginalFeatures = typeof features
 export type OriginalFeature = OriginalFeatures[string]

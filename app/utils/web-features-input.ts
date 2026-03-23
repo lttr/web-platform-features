@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-const browserIdentifierSchema = z.union([
+const _browserIdentifierSchema = z.union([
   z.literal("chrome"),
   z.literal("chrome_android"),
   z.literal("edge"),

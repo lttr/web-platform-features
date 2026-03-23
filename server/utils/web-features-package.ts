@@ -2,7 +2,7 @@ import type { H3Event } from "h3"
 import type { WebFeature } from "~/utils/types"
 import {
   WebFeatureInputSchema,
-  WebFeaturesRecordInputSchema,
+  type WebFeatureInput,
 } from "~/utils/web-features-input"
 import type {
   OriginalFeatures,
@@ -51,7 +51,7 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
       const data = (await response.json()) as WebFeaturesData
 
       // Filter out invalid features individually
-      const validFeatures: Record<string, (typeof data.features)[string]> = {}
+      const validFeatures: Record<string, WebFeatureInput> = {}
       const invalidFeatures: string[] = []
 
       for (const [key, feature] of Object.entries(data.features)) {
@@ -61,7 +61,7 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
         }
         const validation = WebFeatureInputSchema.safeParse(feature)
         if (validation.success) {
-          validFeatures[key] = feature
+          validFeatures[key] = validation.data
         } else {
           invalidFeatures.push(key)
         }
