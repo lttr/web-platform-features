@@ -55,8 +55,15 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
       const invalidFeatures: string[] = []
 
       for (const [key, feature] of Object.entries(data.features)) {
-        // Skip tombstone entries for moved/split features
-        if (feature && typeof feature === "object" && "kind" in feature) {
+        // Skip tombstone entries for moved/split features.
+        // Since web-features v3.29.0 every entry carries a `kind`
+        // ("feature" | "moved" | "split"), so only skip non-feature kinds.
+        if (
+          feature &&
+          typeof feature === "object" &&
+          "kind" in feature &&
+          feature.kind !== "feature"
+        ) {
           continue
         }
         const validation = WebFeatureInputSchema.safeParse(feature)
