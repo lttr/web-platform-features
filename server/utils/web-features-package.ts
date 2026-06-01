@@ -13,8 +13,14 @@ import type {
 // Alternatively: data from a CDN
 // const webFeaturesUrl = "https://cdn.jsdelivr.net/npm/web-features/index.json"
 
-const latestReleaseUrl =
-  "https://api.github.com/repos/web-platform-dx/web-features/releases/latest"
+// The repo is a monorepo: `releases/latest` may point to a non-data
+// release (e.g. `compute-baseline/v0.5.0`) which has no `data.json`.
+// Fetch the release list and pick the newest stable `web-features`
+// data release (tag `vX.Y.Z`), skipping `next` and other packages.
+const releasesUrl =
+  "https://api.github.com/repos/web-platform-dx/web-features/releases?per_page=30"
+
+const webFeaturesTagPattern = /^v\d+\.\d+\.\d+$/
 
 interface GithubReleaseData {
   assets: Array<{ name: string; browser_download_url: string }>
@@ -33,9 +39,21 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
   async (_event: H3Event) => {
     const startTime = performance.now()
 
-    const data = (await $fetch(latestReleaseUrl, {
+    const releases = (await $fetch(releasesUrl, {
       headers: { "User-Agent": "web-features" },
-    })) as GithubReleaseData
+    })) as GithubReleaseData[]
+
+    // Releases are returned newest-first; take the first stable
+    // web-features data release that ships a `data.json`.
+    const data = releases.find(
+      (release) =>
+        webFeaturesTagPattern.test(release.tag_name) &&
+        release.assets.some((asset) => asset.name === "data.json"),
+    )
+
+    if (!data) {
+      throw new Error("No web-features data release found on GitHub!")
+    }
 
     const htmlUrl = data.html_url
     const tagName = data.tag_name
