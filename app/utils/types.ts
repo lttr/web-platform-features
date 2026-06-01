@@ -4,6 +4,7 @@ import type { EnhancedCompatFeature } from "./web-features-output"
 export interface WebFeature extends WebFeatureInputWithId {
   compatFeaturesEnhanced: EnhancedCompatFeature[]
   isInterop2025?: boolean
+  isInterop2026?: boolean
 }
 
 export const Views = ["all", "limited", "low", "high"] as const

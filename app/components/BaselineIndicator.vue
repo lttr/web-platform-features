@@ -23,19 +23,35 @@
             {{ groupNames || "\u00A0" }}
           </span>
         </div>
-        <!-- Interop badge: top-right on mobile, inline on desktop -->
-        <span
-          v-if="feature.isInterop2025"
-          class="md:hidden text-xs px-2 py-1 rounded bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 font-medium whitespace-nowrap"
-          title="Part of Interop 2025 - browsers working together to support this feature"
-        >
-          Interop 2025
+        <!-- Interop badges: top-right on mobile, inline on desktop -->
+        <span class="md:hidden flex gap-1 flex-shrink-0">
+          <span
+            v-if="feature.isInterop2026"
+            class="text-xs px-2 py-1 rounded bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 font-medium whitespace-nowrap"
+            title="Part of Interop 2026 - browsers working together to support this feature"
+          >
+            Interop 2026
+          </span>
+          <span
+            v-if="feature.isInterop2025"
+            class="text-xs px-2 py-1 rounded bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 font-medium whitespace-nowrap"
+            title="Part of Interop 2025 - browsers working together to support this feature"
+          >
+            Interop 2025
+          </span>
         </span>
       </div>
 
       <!-- Row 2: Support info + browsers + date -->
       <div class="flex flex-nowrap gap-2 items-center md:flex-shrink-0">
-        <!-- Interop badge: hidden on mobile, shown on desktop -->
+        <!-- Interop badges: hidden on mobile, shown on desktop -->
+        <span
+          v-if="feature.isInterop2026"
+          class="hidden md:inline-block text-xs px-2 py-1 rounded bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 font-medium"
+          title="Part of Interop 2026 - browsers working together to support this feature"
+        >
+          Interop 2026
+        </span>
         <span
           v-if="feature.isInterop2025"
           class="hidden md:inline-block text-xs px-2 py-1 rounded bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 font-medium"
