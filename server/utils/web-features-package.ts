@@ -106,6 +106,15 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
         },
       )
 
+      // Fail loudly instead of silently serving an empty dataset, which
+      // would otherwise render as "0 features" with a healthy HTTP 200.
+      // Usually means upstream schema drift broke validation/filtering.
+      if (list.length === 0) {
+        throw new Error(
+          `web-features ${tagName}: 0 valid features (upstream schema drift?)`,
+        )
+      }
+
       const endTime = performance.now()
       console.log(
         "Fetching web features took ",
