@@ -70,7 +70,8 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
 
       // Filter out invalid features individually
       const validFeatures: Record<string, WebFeatureInput> = {}
-      const invalidFeatures: string[] = []
+      const invalidFeatures: Array<{ key: string; issues: string }> = []
+      let skipped = 0
 
       for (const [key, feature] of Object.entries(data.features)) {
         // Skip tombstone entries for moved/split features.
@@ -82,18 +83,29 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
           "kind" in feature &&
           feature.kind !== "feature"
         ) {
+          skipped++
           continue
         }
         const validation = WebFeatureInputSchema.safeParse(feature)
         if (validation.success) {
           validFeatures[key] = validation.data
         } else {
-          invalidFeatures.push(key)
+          // Record the exact Zod issues (path + message) so schema drift
+          // is diagnosable from logs instead of just a count.
+          invalidFeatures.push({
+            key,
+            issues: validation.error.issues
+              .map((i) => `${i.path.join(".") || "(root)"}: ${i.message}`)
+              .join("; "),
+          })
         }
       }
 
       if (invalidFeatures.length > 0) {
-        console.error("Invalid features found:", invalidFeatures)
+        console.error(
+          `web-features ${tagName}: ${invalidFeatures.length} features failed validation. Sample:`,
+          invalidFeatures.slice(0, 5),
+        )
       }
 
       const list: WebFeature[] = Object.entries(validFeatures).map(
@@ -108,10 +120,15 @@ export const getWebFeaturesPackageCached = defineCachedFunction(
 
       // Fail loudly instead of silently serving an empty dataset, which
       // would otherwise render as "0 features" with a healthy HTTP 200.
-      // Usually means upstream schema drift broke validation/filtering.
+      // Report which stage dropped everything: schema drift either breaks
+      // validation (invalid > 0) or the kind filter (everything skipped).
       if (list.length === 0) {
+        const total = Object.keys(data.features).length
+        const detail = invalidFeatures[0]
+          ? `first validation error — ${invalidFeatures[0].key}: ${invalidFeatures[0].issues}`
+          : `none reached validation (all ${skipped}/${total} skipped by kind filter)`
         throw new Error(
-          `web-features ${tagName}: 0 valid features (upstream schema drift?)`,
+          `web-features ${tagName}: 0 valid features (upstream schema drift?). ${detail}`,
         )
       }
 
