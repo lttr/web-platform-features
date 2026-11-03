@@ -1,9 +1,6 @@
 {
   "name": "@lttr/web-platform-features",
   "private": true,
-  "engines": {
-    "node": "22.x"
-  },
   "type": "module",
   "scripts": {
     "build": "nuxt build",
